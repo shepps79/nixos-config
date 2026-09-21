@@ -143,8 +143,3 @@ export SDKMAN_DIR="$HOME/.sdkman"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-
-# autojump
-#[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
-#[ -f /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh
-#plugins=(git autojump zsh-syntax-highlighting)

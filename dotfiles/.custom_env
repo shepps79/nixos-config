@@ -1,0 +1,46 @@
+export BROWSER="$HOME/.local/bin/open-wsl"
+export PATH="$PATH:/opt/nvim-linux-x86_64/bin:$HOME/.dotnet/tools"
+
+# Machine-local values (SiriusXM Artifactory endpoints + credentials, litellm
+# key, etc.) are not tracked in git. They come from ~/.custom_env.local, which
+# is expected to export at least:
+#   ARTIFACTORY_URL, ARTIFACTORY_HOST, ARTIFACTORY_USER, ARTIFACTORY_TOKEN,
+#   SIRIUSXM_LITELLM_KEY
+[ -f "$HOME/.custom_env.local" ] && . "$HOME/.custom_env.local"
+
+# litellm key (machine-local secret)
+[ -f "$HOME/.litellm_key" ] && . "$HOME/.litellm_key"
+
+# sde for Sirius AWS (machine-local)
+[ -f "$HOME/.sde/profile/profile.sh" ] && . "$HOME/.sde/profile/profile.sh"
+
+# Claude Code SiriusXM environment with SiriusXM
+claude-sm() {
+  CLAUDE_CONFIG_DIR=~/.claude-siriusxm claude "$@"
+}
+cc() {
+  CLAUDE_CONFIG_DIR=~/.claude-siriusxm claude "$@"
+}
+
+# Claude Code for EE
+claude-ee() {
+  CLAUDE_CONFIG_DIR=~/.claude-equalexperts claude "$@"
+}
+cc-ee() {
+  CLAUDE_CONFIG_DIR=~/.claude-equalexperts claude "$@"
+}
+
+# awslocal
+awslocal() {
+  uvx --from awscli-local awslocal "$@"
+}
+
+# pi
+spi() {
+  ANTHROPIC_AUTH_TOKEN=$SIRIUSXM_LITELLM_KEY pi "$@"
+}
+
+# archon
+export ARCHON_TELEMETRY_DISABLED=1
+export DO_NOT_TRACK=1
+export POSTHOG_API_KEY=off

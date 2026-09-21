@@ -1,0 +1,18 @@
+[filesystem "Eclipse Adoptium|21.0.11|/dev/sdd"]
+	timestampResolution = 2467 nanoseconds
+	minRacyThreshold = 5177 microseconds
+[filesystem "Eclipse Adoptium|17.0.19|/dev/sdd"]
+	timestampResolution = 3167 nanoseconds
+	minRacyThreshold = 4447 microseconds
+[filesystem "Eclipse Adoptium|25.0.3|/dev/sdd"]
+	timestampResolution = 28310 nanoseconds
+	minRacyThreshold = 4781 microseconds
+[filesystem "Debian|21.0.11|/dev/sdd"]
+	timestampResolution = 2787 nanoseconds
+	minRacyThreshold = 4780 microseconds
+[filesystem "Eclipse Adoptium|21.0.12.1|/dev/sdd"]
+	timestampResolution = 5523 nanoseconds
+	minRacyThreshold = 5180 microseconds
+[filesystem "Amazon.com Inc.|21.0.12|/dev/sdd"]
+	timestampResolution = 3724 nanoseconds
+	minRacyThreshold = 7192 microseconds

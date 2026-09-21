@@ -1,0 +1,15 @@
+# Defense-in-depth: never commit secrets or runtime state, even if a future
+# capture pulls them in. Stow ignores this file by default (won't symlink it).
+
+# machine-local secret material
+.custom_env.local
+.litellm_key
+.sde/
+.config/gh/hosts.yml
+.config/rclone/rclone.conf
+
+# backups / logs / sockets / runtime state
+*.bak
+*.bak.*
+*.log
+*.sock

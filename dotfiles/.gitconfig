@@ -1,0 +1,42 @@
+[user]
+	name = Richard Shephard
+	useConfigOnly = true
+
+[includeIf "gitdir:~/git/siriusxm/"]
+	path = ~/.gitconfig-siriusxm
+[includeIf "gitdir:~/git/personal/"]
+	path = ~/.gitconfig-personal
+[alias]
+	co = checkout   # checkout branch shortcut
+	cm = commit -m  # commit with message shortcut
+	st = status     # status shortcut
+	br = branch     # create branch shortcut
+	fa = fetch --all --prune
+	ql = log --max-count 5  # view last 5 commits log shortcut
+	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short  # detailed history shortcut
+	p = pull        # pull shotcut
+	pr = pull --rebase    # pull but use rebase instead of merge
+	m  = merge      # merge shortcut
+	r = reset        # reset shortcut
+	rh = reset --hard     # reset hard shortcut
+	cl = clean -xfd    # clean untracked files and folders shortcut
+	tnylog = log --oneline --graph --decorate # pretty log output
+	mgrq = "!moveit() { read branchname; git branch -m $branchname merge-$branchname; git push origin :$branchname; git push --set-upstream origin merge-$branchname;}; git rev-parse --abbrev-ref HEAD | moveit"
+	f = "!fetchAndClean() { git gc --prune=now; git remote prune origin; git fetch --all; }; fetchAndClean"
+[rerere]
+	enabled = true
+[push]
+	autoSetupRemote = true
+[core]
+	pager = delta
+[interactive]
+	diffFilter = delta -color-only
+[merge]
+	conflictStyle = zdiff3
+
+[delta]
+	navigate = true
+	dark = true
+[credential "https://ghe.siriusxm.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential

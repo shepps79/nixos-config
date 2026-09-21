@@ -33,10 +33,6 @@
 	diffFilter = delta -color-only
 [merge]
 	conflictStyle = zdiff3
-
 [delta]
 	navigate = true
 	dark = true
-[credential "https://ghe.siriusxm.com"]
-	helper = 
-	helper = !/usr/bin/gh auth git-credential

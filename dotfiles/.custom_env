@@ -1,11 +1,7 @@
 export BROWSER="$HOME/.local/bin/open-wsl"
 export PATH="$PATH:/opt/nvim-linux-x86_64/bin:$HOME/.dotnet/tools"
 
-# Machine-local values (SiriusXM Artifactory endpoints + credentials, litellm
-# key, etc.) are not tracked in git. They come from ~/.custom_env.local, which
-# is expected to export at least:
-#   ARTIFACTORY_URL, ARTIFACTORY_HOST, ARTIFACTORY_USER, ARTIFACTORY_TOKEN,
-#   SIRIUSXM_LITELLM_KEY
+# Machine-local values
 [ -f "$HOME/.custom_env.local" ] && . "$HOME/.custom_env.local"
 
 # litellm key (machine-local secret)

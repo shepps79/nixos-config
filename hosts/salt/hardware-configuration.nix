@@ -14,7 +14,7 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/1dc8dd4c-e3d2-43a4-8131-89602e94f08b";
+    { device = "/dev/mapper/cryptroot";
       fsType = "ext4";
     };
 
@@ -24,9 +24,8 @@
       options = [ "fmask=0077" "dmask=0077" ];
     };
 
-  swapDevices =
-    [ { device = "/dev/disk/by-uuid/f16d1d03-c33d-4fa7-8edb-e4bf813d071c"; }
-    ];
+  boot.initrd.luks.devices."cryptroot".device =
+    "/dev/disk/by-uuid/1dc8dd4c-e3d2-43a4-8131-89602e94f08b";
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

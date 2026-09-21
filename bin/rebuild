@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Format, rebuild, commit the result labelled with its generation.
+set -euo pipefail
+
+cd "$(dirname "$(readlink -f "$0")")/.."
+
+nix fmt >/dev/null
+git add -A          # stage the reformatting; flakes only build git-tracked files
+
+echo "NixOS rebuilding..."
+# --flake . resolves to nixosConfigurations.$(hostname)
+sudo nixos-rebuild switch --flake . |& tee nixos-switch.log || {
+  grep --color error nixos-switch.log
+  exit 1
+}
+
+git diff --cached --quiet || git commit -m "$(nixos-rebuild list-generations | grep current)"

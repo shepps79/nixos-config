@@ -14,7 +14,6 @@
       ...
     }:
     {
-      # Host names are seasoning. bin/rebuild resolves --flake . by hostname.
       nixosConfigurations.salt = nixpkgs.lib.nixosSystem {
         modules = [
           ./common.nix

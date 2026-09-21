@@ -4,12 +4,18 @@ set -euo pipefail
 
 cd "$(dirname "$(readlink -f "$0")")/.."
 
+host="${1:-$(hostname)}"
+# switch activates locally, so only the current host's config is valid here.
+if [[ "$host" != "$(hostname)" ]]; then
+  echo "refusing to switch '$host' config on '$(hostname)'" >&2
+  exit 1
+fi
+
 nix fmt >/dev/null
 git add -A          # stage the reformatting; flakes only build git-tracked files
 
-echo "NixOS rebuilding..."
-# --flake . resolves to nixosConfigurations.$(hostname)
-sudo nixos-rebuild switch --flake . |& tee nixos-switch.log || {
+echo "NixOS rebuilding $host..."
+sudo nixos-rebuild switch --flake ".#$host" |& tee nixos-switch.log || {
   grep --color error nixos-switch.log
   exit 1
 }

@@ -25,10 +25,50 @@
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
+    # base
     vim
     wget
     git
     stow
+
+    # editors
+    helix
+    neovim
+
+    # cli tools
+    autojump
+    bat
+    bats
+    btop
+    curl
+    delta
+    dmidecode
+    gh
+    gnupg
+    htop
+    inotify-tools
+    jq
+    mc
+    nano
+    rclone
+    ripgrep
+    rsync
+    shellcheck
+    tmux
+    tree
+    unzip
+    xdg-utils
+    zip
+
+    # dev toolchains
+    binutils
+    dotnet-sdk_10
+    gcc
+    gnumake
+    maven
+    pipx
+    pkg-config
+    python3
   ];
 
   # This option defines the first version of NixOS you have installed on this particular machine,

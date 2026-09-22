@@ -85,6 +85,12 @@
     pkg-config
     python3
     fuzzel
+    (rust-bin.nightly.latest.default.override {
+      extensions = [
+        "rust-src"
+        "rust-analyzer"
+      ];
+    })
   ];
 
   # This option defines the first version of NixOS you have installed on this particular machine,

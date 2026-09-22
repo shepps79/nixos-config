@@ -27,17 +27,12 @@
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
-    # base
     vim
     wget
     git
     stow
-
-    # editors
     helix
     neovim
-
-    # cli tools
     autojump
     bat
     bats
@@ -61,8 +56,6 @@
     unzip
     xdg-utils
     zip
-
-    # dev toolchains
     binutils
     dotnet-sdk_10
     gcc

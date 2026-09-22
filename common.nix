@@ -76,6 +76,7 @@
     xdg-utils
     zip
     binutils
+    bun
     dotnet-sdk_10
     gcc
     gnumake

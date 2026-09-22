@@ -6,6 +6,7 @@
     ./hardware-configuration.nix
     ../../desktop/plasma.nix
     ../../desktop/hyprland.nix
+    ../../desktop/niri.nix
   ];
 
   networking.hostName = "salt";

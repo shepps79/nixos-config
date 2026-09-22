@@ -5,6 +5,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../desktop/plasma.nix
+    ../../desktop/hyprland.nix
   ];
 
   networking.hostName = "salt";

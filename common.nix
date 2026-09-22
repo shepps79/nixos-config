@@ -65,7 +65,7 @@
     stow
     neovim
     autojump
-    bats
+    bat
     btop
     curl
     delta

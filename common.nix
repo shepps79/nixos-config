@@ -1,5 +1,5 @@
 # Shared by every host. Hardware, boot and desktop live in ./hosts/<name>.
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   imports = [ ./nonfree.nix ];
@@ -46,10 +46,34 @@
   # AI coding agent harnesses: omp (oh-my-pi) + pi (upstream).
   # programs.omp.enable = true;
 
-  # zsh as richard's login shell. The prompt and plugins (oh-my-zsh,
-  # powerlevel10k, zsh-syntax-highlighting) are loaded by the stowed ~/.zshrc
-  # and must be installed under $HOME; Nix only provides the zsh binary here.
-  programs.zsh.enable = true;
+  # zsh as richard's login shell, with the whole prompt stack provided
+  # declaratively by Nix instead of clones under $HOME. oh-my-zsh,
+  # powerlevel10k (an oh-my-zsh custom theme) and zsh-syntax-highlighting all
+  # come from the store; the stowed ~/.zshrc only layers on ~/.p10k.zsh and the
+  # personal env tail. /etc/zshrc is sourced before ~/.zshrc, so the omz stack
+  # is already loaded by the time ~/.zshrc runs.
+  programs.zsh = {
+    enable = true;
+    syntaxHighlighting.enable = true;
+    ohMyZsh = {
+      enable = true;
+      plugins = [
+        "git"
+        "autojump"
+      ];
+      customPkgs = [ pkgs.zsh-powerlevel10k ];
+      theme = "powerlevel10k/powerlevel10k";
+      # The store copy is read-only; self-update would only error.
+      preLoaded = "zstyle ':omz:update' mode disabled";
+    };
+    # Powerlevel10k instant prompt must run before oh-my-zsh loads. mkBefore
+    # places it ahead of the oh-my-zsh block within /etc/zshrc.
+    interactiveShellInit = lib.mkBefore ''
+      if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
+        source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
+      fi
+    '';
+  };
 
   # Node version manager (nvm, wired up in ~/.zshrc) fetches stock Node builds
   # that are dynamically linked against a standard FHS loader NixOS lacks.

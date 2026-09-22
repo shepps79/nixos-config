@@ -39,6 +39,9 @@
 
   programs.firefox.enable = true;
 
+  # Brave has no NixOS programs.* module; install the package directly.
+  environment.systemPackages = with pkgs; [ brave ];
+
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 

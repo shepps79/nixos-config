@@ -11,6 +11,7 @@
   users.users."richard" = {
     isNormalUser = true;
     description = "Richard Shephard";
+    shell = pkgs.zsh;
     extraGroups = [
       "networkmanager"
       "wheel"
@@ -44,6 +45,11 @@
 
   # AI coding agent harnesses: omp (oh-my-pi) + pi (upstream).
   # programs.omp.enable = true;
+
+  # zsh as richard's login shell. The prompt and plugins (oh-my-zsh,
+  # powerlevel10k, zsh-syntax-highlighting) are loaded by the stowed ~/.zshrc
+  # and must be installed under $HOME; Nix only provides the zsh binary here.
+  programs.zsh.enable = true;
 
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).

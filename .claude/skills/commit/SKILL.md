@@ -26,7 +26,7 @@ Done when the tree is clean and every message names a single change.
 
 One line. Add a body only when the diff does not show why.
 
-**Types**: `feat` `fix` `docs` `refactor` `perf` `style` `test` `build` `ci` `chore` `revert`. When several fit, take the first match in that order.
+**Types**: `feat` `fix` `docs` `refactor` `perf` `style` `test` `build` `ci` `chore` `revert`. 
 
 **Scope**: the directory or file the change lives in. Omit when the change spans the whole repo.
 
@@ -40,4 +40,4 @@ The message carries the change and nothing else. Write the description, add a bo
 
 ## Decision Guide
 
-When multiple types could apply, prefer the first match (definitions in the table above): `fix` > `feat` > breaking-change modifier > `docs` > `test` > `perf` > `refactor` > `style` > `build` > `ci` > `chore`.
+When multiple types could apply, prefer the first match (definitions from above): `fix` > `feat` > breaking-change modifier > `docs` > `test` > `perf` > `refactor` > `style` > `build` > `ci` > `chore`.

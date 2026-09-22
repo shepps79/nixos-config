@@ -51,6 +51,11 @@
   # and must be installed under $HOME; Nix only provides the zsh binary here.
   programs.zsh.enable = true;
 
+  # Node version manager (nvm, wired up in ~/.zshrc) fetches stock Node builds
+  # that are dynamically linked against a standard FHS loader NixOS lacks.
+  # nix-ld supplies that loader so `nvm install <ver>` and the node binaries run.
+  programs.nix-ld.enable = true;
+
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [

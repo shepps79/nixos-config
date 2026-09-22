@@ -5,18 +5,21 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
     nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
+    omp.url = "github:can1357/oh-my-pi";
   };
 
   outputs =
     {
       nixpkgs,
       nixos-wsl,
+      omp,
       ...
     }:
     {
       nixosConfigurations.salt = nixpkgs.lib.nixosSystem {
         modules = [
           ./common.nix
+          omp.nixosModules.default
           ./hosts/salt
         ];
       };
@@ -25,6 +28,7 @@
         modules = [
           ./common.nix
           nixos-wsl.nixosModules.default
+          omp.nixosModules.default
           ./hosts/pepper
         ];
       };

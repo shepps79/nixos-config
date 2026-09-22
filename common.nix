@@ -36,6 +36,15 @@
     "flakes"
   ];
 
+  # Binary cache for oh-my-pi (omp); avoids building it from source.
+  nix.settings.extra-substituters = [ "https://nix-community.cachix.org" ];
+  nix.settings.extra-trusted-public-keys = [
+    "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+  ];
+
+  # AI coding agent harnesses: omp (oh-my-pi) + pi (upstream).
+  programs.omp.enable = true;
+
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
@@ -72,6 +81,7 @@
     gnumake
     maven
     pipx
+    pi-coding-agent
     pkg-config
     python3
     fuzzel

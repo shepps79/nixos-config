@@ -31,10 +31,8 @@
     wget
     git
     stow
-    helix
     neovim
     autojump
-    bat
     bats
     btop
     curl

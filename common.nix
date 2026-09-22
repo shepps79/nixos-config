@@ -17,6 +17,18 @@
     ];
   };
 
+  security.sudo.extraRules = [
+    {
+      users = [ "richard" ];
+      commands = [
+        {
+          command = "ALL";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
+  ];
+
   nixpkgs.config.allowUnfree = true;
 
   nix.settings.experimental-features = [

@@ -20,10 +20,12 @@ sudo nixos-rebuild switch --flake ".#$host" |& tee nixos-switch.log || {
   exit 1
 }
 
-# Label the commit with the active generation. list-generations marks it, but
-# the marker text varies by version; fall back to a dated label so the commit
-# never aborts on an empty message. -i/-m1 catch "current"/"Current"; xargs trims.
+# Label the commit with the active generation. The current row is the one with
+# "current": true in --json output; grepping the table fails because the word
+# "current" is only a column header. Fall back to a dated label if jq finds
+# nothing so the commit never aborts on an empty message.
 if ! git diff --cached --quiet; then
-  label="$(nixos-rebuild list-generations 2>/dev/null | grep -im1 current | xargs || true)"
+  label="$(nixos-rebuild list-generations --json 2>/dev/null \
+    | jq -r 'map(select(.current)) | .[0] // empty | "generation \(.generation) (\(.nixosVersion))"' 2>/dev/null)"
   git commit -m "${label:-rebuild $host $(date +%Y-%m-%d)}"
 fi

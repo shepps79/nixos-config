@@ -29,3 +29,13 @@ if ! git diff --cached --quiet; then
     | jq -r 'map(select(.current)) | .[0] // empty | "generation \(.generation) (\(.nixosVersion))"' 2>/dev/null)"
   git commit -m "${label:-rebuild $host $(date +%Y-%m-%d)}"
 fi
+
+# Keep only the last few system generations so the generation list -- and, on
+# salt, the systemd-boot menu -- don't grow without bound. "+N" keeps the N most
+# recent, including the build just activated; fewer generations means fewer
+# rollback targets but a bounded /boot and profile. Disk is reclaimed lazily by
+# the weekly nix.gc timer (or `sudo nix-collect-garbage` on demand) so switches
+# stay fast. Override the count with KEEP_GENERATIONS.
+keep="${KEEP_GENERATIONS:-4}"
+echo "Trimming system generations to the last $keep..."
+sudo nix-env -p /nix/var/nix/profiles/system --delete-generations "+$keep"

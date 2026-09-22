@@ -43,6 +43,16 @@
     "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
   ];
 
+  # Reclaim disk from superseded builds. bin/rebuild caps how many system
+  # generations survive each switch; this weekly timer then garbage-collects the
+  # store paths the dropped generations used to pin, and auto-optimise dedupes
+  # identical files in the store.
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+  };
+  nix.settings.auto-optimise-store = true;
+
   # AI coding agent harnesses: omp (oh-my-pi) + pi (upstream).
   # programs.omp.enable = true;
 

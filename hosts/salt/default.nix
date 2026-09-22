@@ -14,6 +14,10 @@
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  # Cap the systemd-boot menu to the last few generations. Keep this in step
+  # with the count bin/rebuild trims to, so no boot entry outlives the
+  # generation it points at.
+  boot.loader.systemd-boot.configurationLimit = 4;
 
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;

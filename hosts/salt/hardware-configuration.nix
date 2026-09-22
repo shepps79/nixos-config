@@ -18,14 +18,15 @@
       fsType = "ext4";
     };
 
+  boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-uuid/daff247b-c013-4c37-ae85-ec971c0e9709";
+
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/23E6-A0B1";
+    { device = "/dev/disk/by-uuid/E4DE-4814";
       fsType = "vfat";
-      options = [ "fmask=0077" "dmask=0077" ];
+      options = [ "fmask=0022" "dmask=0022" ];
     };
 
-  boot.initrd.luks.devices."cryptroot".device =
-    "/dev/disk/by-uuid/1dc8dd4c-e3d2-43a4-8131-89602e94f08b";
+  swapDevices = [ ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

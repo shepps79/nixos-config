@@ -43,7 +43,7 @@
   ];
 
   # AI coding agent harnesses: omp (oh-my-pi) + pi (upstream).
-  programs.omp.enable = true;
+  # programs.omp.enable = true;
 
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
@@ -81,7 +81,7 @@
     gcc
     gnumake
     maven
-    pipx
+    #pipx
     pi-coding-agent
     pkg-config
     python3

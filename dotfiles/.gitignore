@@ -5,8 +5,8 @@
 .custom_env.local
 .litellm_key
 .sde/
-.config/gh/hosts.yml
-.config/rclone/rclone.conf
+gh/.config/gh/hosts.yml
+rclone/.config/rclone/rclone.conf
 
 # backups / logs / sockets / runtime state
 *.bak

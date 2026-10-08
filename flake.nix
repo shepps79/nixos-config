@@ -16,6 +16,5 @@
   # Dendritic: every .nix file under ./modules is a flake-parts module, loaded
   # automatically. Paths with a component starting with `_` are skipped, which
   # is how plain NixOS modules (hardware-configuration) live in the tree.
-  outputs =
-    inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
+  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 }

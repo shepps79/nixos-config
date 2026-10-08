@@ -2,51 +2,51 @@
 # reinstall, paste the new file's body in place of the function below.
 {
   flake.nixosModules.saltHardware =
-  {
-    config,
-    lib,
-    pkgs,
-    modulesPath,
-    ...
-  }:
+    {
+      config,
+      lib,
+      pkgs,
+      modulesPath,
+      ...
+    }:
 
-  {
-    imports = [
-      (modulesPath + "/installer/scan/not-detected.nix")
-    ];
-
-    boot.initrd.availableKernelModules = [
-      "xhci_pci"
-      "thunderbolt"
-      "nvme"
-      "usb_storage"
-      "sd_mod"
-      "rtsx_pci_sdmmc"
-    ];
-    boot.initrd.kernelModules = [ ];
-    boot.kernelModules = [ "kvm-intel" ];
-    boot.extraModulePackages = [ ];
-
-    fileSystems."/" = {
-      device = "/dev/mapper/cryptroot";
-      fsType = "ext4";
-    };
-
-    boot.initrd.luks.devices."cryptroot".device =
-      "/dev/disk/by-uuid/daff247b-c013-4c37-ae85-ec971c0e9709";
-
-    fileSystems."/boot" = {
-      device = "/dev/disk/by-uuid/E4DE-4814";
-      fsType = "vfat";
-      options = [
-        "fmask=0022"
-        "dmask=0022"
+    {
+      imports = [
+        (modulesPath + "/installer/scan/not-detected.nix")
       ];
+
+      boot.initrd.availableKernelModules = [
+        "xhci_pci"
+        "thunderbolt"
+        "nvme"
+        "usb_storage"
+        "sd_mod"
+        "rtsx_pci_sdmmc"
+      ];
+      boot.initrd.kernelModules = [ ];
+      boot.kernelModules = [ "kvm-intel" ];
+      boot.extraModulePackages = [ ];
+
+      fileSystems."/" = {
+        device = "/dev/mapper/cryptroot";
+        fsType = "ext4";
+      };
+
+      boot.initrd.luks.devices."cryptroot".device =
+        "/dev/disk/by-uuid/daff247b-c013-4c37-ae85-ec971c0e9709";
+
+      fileSystems."/boot" = {
+        device = "/dev/disk/by-uuid/E4DE-4814";
+        fsType = "vfat";
+        options = [
+          "fmask=0022"
+          "dmask=0022"
+        ];
+      };
+
+      swapDevices = [ ];
+
+      nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+      hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
     };
-
-    swapDevices = [ ];
-
-    nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-    hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  };
 }

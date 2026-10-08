@@ -3,6 +3,9 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
+    import-tree.url = "github:vic/import-tree";
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
     nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
     omp.url = "github:can1357/oh-my-pi";
@@ -10,56 +13,9 @@
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
   };
 
+  # Dendritic: every .nix file under ./modules is a flake-parts module, loaded
+  # automatically. Paths with a component starting with `_` are skipped, which
+  # is how plain NixOS modules (hardware-configuration) live in the tree.
   outputs =
-    {
-      nixpkgs,
-      nixos-wsl,
-      omp,
-      rust-overlay,
-      ...
-    }:
-    let
-      rustOverlay = {
-        nixpkgs.overlays = [ rust-overlay.overlays.default ];
-      };
-    in
-    {
-      nixosConfigurations.salt = nixpkgs.lib.nixosSystem {
-        modules = [
-          ./common.nix
-          rustOverlay
-          omp.nixosModules.default
-          ./hosts/salt
-        ];
-      };
-
-      nixosConfigurations.pepper = nixpkgs.lib.nixosSystem {
-        modules = [
-          ./common.nix
-          rustOverlay
-          nixos-wsl.nixosModules.default
-          omp.nixosModules.default
-          ./hosts/pepper
-        ];
-      };
-
-      # Wrap nixfmt so `nix fmt` with no path args formats the whole tree
-      # instead of blocking on stdin (bare nixfmt reads stdin when given no
-      # files, and never recurses a directory itself).
-      formatter.x86_64-linux =
-        let
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        in
-        pkgs.writeShellApplication {
-          name = "nixfmt-tree";
-          runtimeInputs = [
-            pkgs.nixfmt
-            pkgs.findutils
-          ];
-          text = ''
-            if [ "$#" -eq 0 ]; then set -- .; fi
-            find "$@" -type f -name '*.nix' -exec nixfmt {} +
-          '';
-        };
-    };
+    inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 }

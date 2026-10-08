@@ -1,0 +1,15 @@
+# Non-free applications, in one file so the unfree surface is easy to audit.
+{
+  flake.modules.nixos.base =
+    { pkgs, ... }:
+    {
+      nixpkgs.config.allowUnfree = true;
+
+      environment.systemPackages = with pkgs; [
+        claude-code
+        obsidian
+        vscode
+        zoom-us
+      ];
+    };
+}

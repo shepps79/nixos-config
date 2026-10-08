@@ -1,0 +1,13 @@
+# Tracking
+export ARCHON_TELEMETRY_DISABLED=1
+export DO_NOT_TRACK=1
+export POSTHOG_API_KEY=off
+
+# Machine-local values
+[ -f "$HOME/.custom_env.local" ] && . "$HOME/.custom_env.local"
+
+# Path extensions
+export PATH="$PATH:$HOME/.dotnet/tools"
+
+# Aliases
+alias ls='ls -l --color'

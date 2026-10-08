@@ -42,8 +42,9 @@ mount "${DISK}p1" /mnt/boot
 nixos-generate-config --root /mnt
 nix-shell -p git
 git clone <repo-url> /mnt/etc/nixos-config
-cp /mnt/etc/nixos/hardware-configuration.nix \
-   /mnt/etc/nixos-config/modules/hosts/salt/_hardware-configuration.nix
+# Paste the generated file's body into flake.nixosModules.saltHardware:
+$EDITOR /mnt/etc/nixos/hardware-configuration.nix \
+   /mnt/etc/nixos-config/modules/hosts/salt/hardware.nix
 blkid "${DISK}p1" "${DISK}p2"   # confirm UUIDs match /boot and luks.devices.cryptroot
 ```
 
@@ -74,7 +75,7 @@ None by default; `zramSwap` is enough on 64 GiB with no hibernation. To add disk
 swap later — no repartition, inherits LUKS via the encrypted root:
 
 ```nix
-# modules/hosts/salt/default.nix (inside flake.modules.nixos.salt)
+# modules/hosts/salt/configuration.nix
 swapDevices = [ { device = "/var/lib/swapfile"; size = 8 * 1024; } ];
 ```
 

@@ -11,7 +11,6 @@
     omp.url = "github:can1357/oh-my-pi";
     rust-overlay.url = "github:oxalica/rust-overlay";
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
-    wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
   };
 
   # Dendritic: every .nix file under ./modules is a flake-parts module, loaded

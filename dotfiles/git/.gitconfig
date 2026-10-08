@@ -2,8 +2,6 @@
 	name = Richard Shephard
 	useConfigOnly = true
 
-[includeIf "gitdir:~/git/siriusxm/"]
-	path = ~/.gitconfig-siriusxm
 [includeIf "gitdir:~/git/personal/"]
 	path = ~/.gitconfig-personal
 [alias]

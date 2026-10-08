@@ -11,6 +11,7 @@
         plasma
         hyprland
         niri
+        fonts
       ];
 
       networking.hostName = "salt";

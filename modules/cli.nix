@@ -9,7 +9,6 @@
         git
         stow
         neovim
-        bat
         btop
         curl
         delta

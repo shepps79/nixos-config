@@ -1,7 +1,7 @@
 # Hyprland (Wayland) + Noctalia shell. Coexists with ./plasma.nix: SDDM lists
 # both sessions, pick one at login. User config lives in dotfiles/hypr (stow).
 {
-  flake.modules.nixos.hyprland =
+  flake.nixosModules.hyprland =
     { pkgs, ... }:
     {
       # Wayland session + xdg-desktop-portal-hyprland. Registers the Hyprland

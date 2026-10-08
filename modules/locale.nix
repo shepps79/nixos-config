@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.base = {
+  flake.nixosModules.base = {
     time.timeZone = "Africa/Johannesburg";
     i18n.defaultLocale = "en_ZA.UTF-8";
   };

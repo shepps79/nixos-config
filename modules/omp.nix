@@ -2,7 +2,7 @@
 { inputs, ... }:
 
 {
-  flake.modules.nixos.base = {
+  flake.nixosModules.base = {
     imports = [ inputs.omp.nixosModules.default ];
 
     # programs.omp.enable = true;

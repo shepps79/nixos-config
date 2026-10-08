@@ -1,0 +1,65 @@
+# salt - bare metal laptop.
+{ self, ... }:
+
+{
+  flake.nixosModules.saltConfiguration =
+    { pkgs, ... }:
+    {
+      imports = with self.nixosModules; [
+        saltHardware
+        base
+        plasma
+        hyprland
+        niri
+      ];
+
+      networking.hostName = "salt";
+
+      # Use the systemd-boot EFI boot loader.
+      boot.loader.systemd-boot.enable = true;
+      boot.loader.efi.canTouchEfiVariables = true;
+      # Cap the systemd-boot menu to the last few generations. Keep this in step
+      # with the count bin/rebuild trims to, so no boot entry outlives the
+      # generation it points at.
+      boot.loader.systemd-boot.configurationLimit = 4;
+
+      # Use latest kernel.
+      boot.kernelPackages = pkgs.linuxPackages_latest;
+
+      # Enable networking
+      networking.networkmanager.enable = true;
+
+      # Enable CUPS to print documents.
+      services.printing.enable = true;
+
+      # Enable sound with pipewire.
+      services.pulseaudio.enable = false;
+      security.rtkit.enable = true;
+      services.pipewire = {
+        enable = true;
+        alsa.enable = true;
+        alsa.support32Bit = true;
+        pulse.enable = true;
+      };
+
+      # Enable touchpad support (enabled default in most desktopManager).
+      # services.libinput.enable = true;
+
+      programs.firefox.enable = true;
+
+      # Brave has no NixOS programs.* module; install the package directly.
+      environment.systemPackages = with pkgs; [ brave ];
+
+      # Enable the OpenSSH daemon.
+      services.openssh.enable = true;
+
+      boot.initrd.systemd.enable = true;
+      boot.initrd.luks.devices."cryptroot".crypttabExtraOpts = [ "tpm2-device=auto" ];
+
+      zramSwap.enable = true;
+
+      # First NixOS release installed on this machine. Never bump it on upgrade;
+      # see https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
+      system.stateVersion = "26.05";
+    };
+}

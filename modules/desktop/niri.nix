@@ -2,7 +2,7 @@
 # ./plasma.nix and ./hyprland.nix: SDDM lists every session, pick one at login.
 # User config lives in dotfiles/niri (stow); niri ships a default config too.
 {
-  flake.modules.nixos.niri =
+  flake.nixosModules.niri =
     { pkgs, ... }:
     {
       # nixpkgs has no `programs.niri` module, so register the Wayland session the

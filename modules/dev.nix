@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.base =
+  flake.nixosModules.base =
     { pkgs, ... }:
     {
       # Node version manager (nvm, wired up in ~/.zshrc) fetches stock Node builds

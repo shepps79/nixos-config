@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.base =
+  flake.nixosModules.base =
     { pkgs, lib, ... }:
     {
       # zsh as richard's login shell, with the whole prompt stack provided

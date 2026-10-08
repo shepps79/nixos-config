@@ -1,6 +1,6 @@
 # KDE Plasma 6 on X11. Also enables SDDM, which hyprland and niri register with.
 {
-  flake.modules.nixos.plasma =
+  flake.nixosModules.plasma =
     { pkgs, ... }:
     {
       services.xserver.enable = true;

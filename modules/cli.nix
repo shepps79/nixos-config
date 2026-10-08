@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.base =
+  flake.nixosModules.base =
     { pkgs, ... }:
     {
       # You can use https://search.nixos.org/ to find more packages (and options).

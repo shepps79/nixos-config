@@ -3,7 +3,7 @@
 { inputs, ... }:
 
 {
-  flake.modules.nixos.base =
+  flake.nixosModules.base =
     { pkgs, ... }:
     {
       nixpkgs.overlays = [ inputs.rust-overlay.overlays.default ];

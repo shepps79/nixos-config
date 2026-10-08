@@ -1,16 +1,12 @@
 # pepper - WSL2 under Windows. No bootloader, kernel, filesystems or desktop:
 # the NixOS-WSL module and Windows supply all of that.
-{ config, inputs, ... }:
+{ self, inputs, ... }:
 
 {
-  flake.nixosConfigurations.pepper = inputs.nixpkgs.lib.nixosSystem {
-    modules = [ config.flake.modules.nixos.pepper ];
-  };
-
-  flake.modules.nixos.pepper = {
+  flake.nixosModules.pepperConfiguration = {
     imports = [
       inputs.nixos-wsl.nixosModules.default
-      config.flake.modules.nixos.base
+      self.nixosModules.base
     ];
 
     wsl.enable = true;

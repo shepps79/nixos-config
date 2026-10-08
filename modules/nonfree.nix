@@ -1,6 +1,6 @@
 # Non-free applications, in one file so the unfree surface is easy to audit.
 {
-  flake.modules.nixos.base =
+  flake.nixosModules.base =
     { pkgs, ... }:
     {
       nixpkgs.config.allowUnfree = true;

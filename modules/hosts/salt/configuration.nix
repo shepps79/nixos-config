@@ -12,6 +12,7 @@
         hyprland
         niri
         fonts
+        onepassword
       ];
 
       networking.hostName = "salt";

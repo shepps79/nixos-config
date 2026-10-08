@@ -2,7 +2,7 @@
   description = "Richard's NixOS config";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
     nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
     omp.url = "github:can1357/oh-my-pi";
@@ -53,7 +53,7 @@
         pkgs.writeShellApplication {
           name = "nixfmt-tree";
           runtimeInputs = [
-            pkgs.nixfmt-rfc-style
+            pkgs.nixfmt
             pkgs.findutils
           ];
           text = ''

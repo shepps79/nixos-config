@@ -15,16 +15,16 @@
       xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
       environment.systemPackages = with pkgs; [
-        niri # the compositor
-        noctalia-shell # the shell (bar, launcher, notifications); bundles quickshell
-        hyprpolkitagent # polkit auth agent for the session
-        kitty # terminal (niri ships no default)
-        swww # wallpaper daemon Noctalia drives
-        brightnessctl # backlight control for Noctalia
-        wl-clipboard # clipboard for Wayland
-        cliphist # clipboard history for Noctalia
-        matugen # Material palette generation for Noctalia theming
-        cava # audio visualiser widget
+        niri
+        noctalia-shell
+        hyprpolkitagent
+        kitty
+        swww
+        brightnessctl
+        wl-clipboard
+        cliphist
+        matugen
+        cava
       ];
     };
 }

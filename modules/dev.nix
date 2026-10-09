@@ -10,7 +10,7 @@
         gcc
         gnumake
         maven
-        #pipx
+        pipx
         pi-coding-agent
         pkg-config
         python3

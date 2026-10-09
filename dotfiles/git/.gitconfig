@@ -4,6 +4,8 @@
 
 [includeIf "gitdir:~/git/personal/"]
 	path = ~/.gitconfig-personal
+[includeId "gitdir:~/nixos-config/"]
+	path = ~/.gitconfig-personal
 [alias]
 	co = checkout   # checkout branch shortcut
 	cm = commit -m  # commit with message shortcut

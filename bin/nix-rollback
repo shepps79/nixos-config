@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Activate an earlier system generation (list them with bin/nix-generations).
+# The repo is untouched, so the next bin/rebuild undoes the rollback.
+#
+# Usage: bin/nix-rollback <generation> [--yes]
+set -euo pipefail
+
+gen="${1:-}"
+profile=/nix/var/nix/profiles/system
+link="$profile-$gen-link"
+
+if ! [[ "$gen" =~ ^[0-9]+$ ]]; then
+  echo "usage: bin/nix-rollback <generation> [--yes]" >&2
+  exit 1
+fi
+if [[ ! -L "$link" ]]; then
+  echo "system generation $gen does not exist, see bin/nix-generations" >&2
+  exit 1
+fi
+
+echo "Target:  $(readlink -f "$link")"
+echo "Version: $(cat "$link/nixos-version" 2>/dev/null || echo unknown)"
+nvd diff /run/current-system "$link" 2>/dev/null || true
+
+if [[ "${2:-}" != --yes ]]; then
+  read -rp "Activate system generation $gen? [y/N] " reply
+  [[ "$reply" == [yY]* ]] || { echo "aborted"; exit 1; }
+fi
+
+sudo nix-env -p "$profile" --switch-generation "$gen"
+sudo "$profile/bin/switch-to-configuration" switch
+echo "Rolled back to system generation $gen."

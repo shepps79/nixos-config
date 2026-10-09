@@ -12,7 +12,6 @@
         btop
         curl
         delta
-        dmidecode
         gh
         gnupg
         htop
@@ -28,8 +27,6 @@
         unzip
         xdg-utils
         zip
-        fuzzel
-        wezterm
       ];
     };
 }

@@ -7,9 +7,6 @@
 
       environment.systemPackages = with pkgs; [
         claude-code
-        obsidian
-        vscode
-        zoom-us
       ];
     };
 }

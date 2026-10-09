@@ -13,6 +13,12 @@
         niri
         fonts
         onepassword
+        obsidian
+        zoom
+        vscode
+        wezterm
+        fuzzel
+        dmidecode
       ];
 
       networking.hostName = "salt";

@@ -14,11 +14,15 @@ fi
 nix fmt >/dev/null
 git add -A          # stage the reformatting; flakes only build git-tracked files
 
+old_system="$(readlink -f /run/current-system)"
 echo "NixOS rebuilding $host..."
 sudo nixos-rebuild switch --flake ".#$host" |& tee nixos-switch.log || {
   grep --color error nixos-switch.log
   exit 1
 }
+
+# Show which packages changed versions. Informational only, never blocks the commit.
+nvd diff "$old_system" /run/current-system || true
 
 # Label the commit with the active generation. The current row is the one with
 # "current": true in --json output; grepping the table fails because the word

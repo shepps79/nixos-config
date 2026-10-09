@@ -24,6 +24,7 @@
         nano
         ncdu
         nmap
+        nvd
         rclone
         ripgrep
         rsync

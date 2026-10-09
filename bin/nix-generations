@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# List system generations (date, NixOS version, current marker) and warn when
+# there is nothing to roll back to.
+#
+# Usage: bin/nix-generations
+set -euo pipefail
+
+nixos-rebuild list-generations
+count="$(compgen -G '/nix/var/nix/profiles/system-*-link' | wc -l)"
+if ((count <= 1)); then
+  echo
+  echo "WARNING: only $count generation, so there is nothing to roll back to."
+fi

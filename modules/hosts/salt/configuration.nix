@@ -21,6 +21,7 @@
         fuzzel
         dmidecode
         canonG3070
+        cupsPdf
         clamav
       ];
 

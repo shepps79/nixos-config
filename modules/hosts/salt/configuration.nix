@@ -20,6 +20,7 @@
         wezterm
         fuzzel
         dmidecode
+        canonG3070
         clamav
       ];
 

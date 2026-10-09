@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+# Delete system generations older than KEEP_DAYS, remove result symlinks in the
+# repo root, then garbage-collect the store. The active generation and the
+# newest generation older than it (the rollback target) are always kept, however
+# old, so a purge never leaves nothing to fall back to.
+#
+# Usage: bin/nix-purge [KEEP_DAYS] [--dry-run]   (KEEP_DAYS defaults to 7)
+set -euo pipefail
+
+cd "$(dirname "$(readlink -f "$0")")/.."
+
+keep_days=7
+dry_run=no
+for arg in "$@"; do
+  case "$arg" in
+    --dry-run) dry_run=yes ;;
+    *[!0-9]* | '')
+      echo "usage: bin/nix-purge [KEEP_DAYS] [--dry-run]" >&2
+      exit 1
+      ;;
+    *) keep_days="$arg" ;;
+  esac
+done
+
+profile=/nix/var/nix/profiles/system
+cutoff="$(date -d "-$keep_days days" +%s)"
+[[ "$(readlink "$profile")" =~ -([0-9]+)-link$ ]]
+active="${BASH_REMATCH[1]}"
+
+# All generation numbers, newest first.
+mapfile -t all < <(compgen -G "$profile-*-link" | sed -E 's/.*-([0-9]+)-link$/\1/' | sort -rn)
+
+rollback=""
+stale=()
+for n in "${all[@]}"; do
+  ((n == active)) && continue
+  if [[ -z "$rollback" ]] && ((n < active)); then
+    rollback="$n"
+    continue
+  fi
+  (($(stat -c %Y "$profile-$n-link") < cutoff)) && stale+=("$n")
+done
+
+[[ "$dry_run" == yes ]] && echo "DRY RUN: nothing will be deleted"
+echo "Active generation: $active"
+echo "Rollback target:   ${rollback:-none (no older generation exists)}"
+
+if ((${#stale[@]} == 0)); then
+  echo "No generations older than $keep_days days to delete."
+elif [[ "$dry_run" == yes ]]; then
+  echo "Would delete generations: ${stale[*]}"
+else
+  echo "Deleting generations: ${stale[*]}"
+  sudo nix-env -p "$profile" --delete-generations "${stale[@]}"
+fi
+
+if [[ "$dry_run" == yes ]]; then
+  find . -maxdepth 1 -type l -name 'result*' -printf 'Would remove %p\n'
+  echo "Would run garbage collection."
+  exit 0
+fi
+
+find . -maxdepth 1 -type l -name 'result*' -printf 'Removing %p\n' -delete
+before="$(df --output=used /nix | tail -1)"
+sudo nix store gc
+after="$(df --output=used /nix | tail -1)"
+echo "Freed about $(((before - after) / 1024)) MiB."

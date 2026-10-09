@@ -7,6 +7,7 @@
         wget
         git
         stow
+        bat
         btop
         curl
         delta

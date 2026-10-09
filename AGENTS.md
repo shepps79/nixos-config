@@ -21,7 +21,7 @@ User-level config that isn't NixOS config lives in `dotfiles/`, symlinked into `
 
 - Every subdirectory of `dotfiles/` is one stow package (`dotfiles/<app>/`) mirroring `$HOME`, and is picked up automatically. `dotfiles/.gitignore` is not a package.
 - Add new user config as a package here. Don't use NixOS modules for per-user files.
-- Stow folds: if a target directory doesn't exist, the whole directory becomes a symlink into the repo, and anything an app writes there lands in git. To link only the files we ship, `bin/stow-dotfiles` pre-creates the parent dirs (`~/.config`, `~/.claude/skills`, `~/.claude-equalexperts`, `~/.agents/skills`, `~/.pi/agent/extensions`). A new package whose apps write into the same dir needs its parent added to that `mkdir -p`.
+- Stow folds: if a target directory doesn't exist, the whole directory becomes a symlink into the repo, and anything an app writes there lands in git. To link only the files we ship, `bin/stow-dotfiles` pre-creates the parent dirs (`~/.config`, `~/.claude/skills`, `~/.claude-equalexperts/skills`, `~/.agents/skills`, `~/.pi/agent/extensions`). A new package whose apps write into the same dir needs its parent added to that `mkdir -p`.
 - Don't stow files that apps rewrite (e.g. `~/.claude/settings.json`, `~/.claude.json`); they can replace the symlink. Link stable, hand-edited files such as `CLAUDE.md` and skill directories.
 - `.claude/skills/` at the repo root is this repo's own project skills, not a dotfiles package.
 

@@ -234,6 +234,22 @@
         "type": "github"
       }
     },
+    "nvm": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791467450,
+        "narHash": "sha256-3fFJbzuuucG6fxhHi+gHp1ZKheP2xUoiWLfQMV5Jzj4=",
+        "owner": "nvm-sh",
+        "repo": "nvm",
+        "rev": "e45c2df7c0438bf133bbb9dcc54786148a197980",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nvm-sh",
+        "repo": "nvm",
+        "type": "github"
+      }
+    },
     "omp": {
       "inputs": {
         "bun2nix": "bun2nix",
@@ -263,6 +279,7 @@
         "import-tree": "import-tree",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs",
+        "nvm": "nvm",
         "omp": "omp",
         "rust-overlay": "rust-overlay_2"
       }

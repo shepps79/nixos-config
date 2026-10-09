@@ -15,6 +15,7 @@
         onepassword
         obsidian
         zoom
+        slack
         vscode
         wezterm
         fuzzel

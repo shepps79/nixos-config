@@ -55,8 +55,6 @@
       # Enable touchpad support (enabled default in most desktopManager).
       # services.libinput.enable = true;
 
-      programs.firefox.enable = true;
-
       # Brave has no NixOS programs.* module; install the package directly.
       environment.systemPackages = with pkgs; [ brave ];
 

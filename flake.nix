@@ -8,6 +8,8 @@
     import-tree.url = "github:vic/import-tree";
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
     nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
+    nvm.url = "github:nvm-sh/nvm";
+    nvm.flake = false;
     omp.url = "github:can1357/oh-my-pi";
     rust-overlay.url = "github:oxalica/rust-overlay";
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";

@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Build a host's config WITHOUT activating it. For the host this runs on, also
+# nvd-diff it against the running system. Exits non-zero if the build fails.
+#
+# Usage: bin/nix-build-check [host]   (defaults to this host)
+set -euo pipefail
+
+repo="$(dirname "$(readlink -f "$0")")/.."
+host="${1:-$(hostname)}"
+
+# nvd only lands on PATH after the first rebuild that installs it.
+command -v nvd >/dev/null || nvd() { nix run --inputs-from "$repo" nixpkgs#nvd -- "$@"; }
+
+# Build in a temp dir so the ./result link doesn't land in the repo.
+build_dir="$(mktemp -d)"
+trap 'rm -rf "$build_dir"' EXIT
+
+echo "Building $host (no switch)..."
+(cd "$build_dir" && nixos-rebuild build --flake "$repo#$host")
+echo
+if [[ "$host" == "$(hostname)" ]]; then
+  nvd diff /run/current-system "$(readlink -f "$build_dir/result")"
+else
+  echo "Not diffing: $host is not the running system."
+fi
+echo
+echo "Build OK, nothing was activated."

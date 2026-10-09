@@ -20,6 +20,7 @@
         wezterm
         fuzzel
         dmidecode
+        clamav
       ];
 
       networking.hostName = "salt";

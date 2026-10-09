@@ -11,3 +11,9 @@ export PATH="$PATH:$HOME/.dotnet/tools"
 
 # Aliases
 alias ls='ls -l --color'
+
+# Custom functions
+cc-ee() {
+  CLAUDE_CONFIG_DIR=~/.claude-equalexperts claude "$@"
+}
+

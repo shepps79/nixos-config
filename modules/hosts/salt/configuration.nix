@@ -24,6 +24,7 @@
         cupsPdf
         clamav
         meld
+        media
       ];
 
       networking.hostName = "salt";

@@ -16,7 +16,7 @@
 
 import type { AssistantMessage } from "@earendil-works/pi-ai";
 import type { ExtensionAPI, ExecResult, ExtensionContext } from "@earendil-works/pi-coding-agent";
-import { truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
+import { truncateToWidth } from "@earendil-works/pi-tui";
 
 // ---- Colors (256-color ANSI, mirrored from ~/.p10k.zsh) ----
 const C_LINUX = "\x1b[38;5;255m"; // penguin icon

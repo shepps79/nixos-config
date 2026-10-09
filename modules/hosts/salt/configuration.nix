@@ -25,6 +25,7 @@
         clamav
         meld
         media
+        jetbrains
       ];
 
       networking.hostName = "salt";

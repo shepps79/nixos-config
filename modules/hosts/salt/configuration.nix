@@ -23,6 +23,7 @@
         canonG3070
         cupsPdf
         clamav
+        meld
       ];
 
       networking.hostName = "salt";

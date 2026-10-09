@@ -5,7 +5,7 @@
   flake.nixosModules.base = {
     imports = [ inputs.omp.nixosModules.default ];
 
-    # programs.omp.enable = true;
+    programs.omp.enable = true;
 
     # Binary cache for oh-my-pi (omp); avoids building it from source.
     nix.settings.extra-substituters = [ "https://nix-community.cachix.org" ];

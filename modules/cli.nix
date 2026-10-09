@@ -27,7 +27,6 @@
         rclone
         ripgrep
         rsync
-        tmux
         tree
         unzip
         usbutils

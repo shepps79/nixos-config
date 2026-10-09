@@ -19,7 +19,7 @@ stowdir="$root/dotfiles"
 # of turning all of ~/.config into one symlink into the repo. Same for the
 # agent dirs (~/.claude, ~/.claude-equalexperts, ~/.agents, ~/.pi): only the files we ship are linked, so anything Claude or other
 # tools write into them stays local and out of git.
-mkdir -p "$HOME/.config" "$HOME/.claude/skills" "$HOME/.claude-equalexperts" "$HOME/.agents/skills" "$HOME/.pi/agent/extensions"
+mkdir -p "$HOME/.config" "$HOME/.claude/skills" "$HOME/.claude-equalexperts/skills" "$HOME/.agents/skills" "$HOME/.pi/agent/extensions"
 
 # Every subdirectory of dotfiles/ is an application package.
 packages=()

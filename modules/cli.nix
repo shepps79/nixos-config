@@ -12,6 +12,7 @@
         curl
         delta
         fastfetch
+        fzf
         gh
         gnupg
         htop

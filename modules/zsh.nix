@@ -16,6 +16,7 @@
           plugins = [
             "git"
             "autojump"
+            "fzf"
           ];
           customPkgs = [ pkgs.zsh-powerlevel10k ];
           theme = "powerlevel10k/powerlevel10k";

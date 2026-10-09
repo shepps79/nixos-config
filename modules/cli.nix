@@ -11,19 +11,25 @@
         btop
         curl
         delta
+        fastfetch
         gh
         gnupg
         htop
+        httpie
         inotify-tools
         jq
+        lazygit
         mc
         nano
+        ncdu
+        nmap
         rclone
         ripgrep
         rsync
         tmux
         tree
         unzip
+        usbutils
         xdg-utils
         zip
       ];

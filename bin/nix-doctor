@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+# Read-only health check: untracked files the flake can't see, formatting drift,
+# failed systemd units, rollback availability, pending reboot/switch, store
+# usage and flake input age. Changes nothing. Exits non-zero on any FAIL.
+#
+# Usage: bin/nix-doctor
+set -euo pipefail
+
+cd "$(dirname "$(readlink -f "$0")")/.."
+
+profile=/nix/var/nix/profiles/system
+stale_days=30
+problems=0
+warnings=0
+fail() { echo "  FAIL: $1"; problems=$((problems + 1)); }
+warn() { echo "  WARN: $1"; warnings=$((warnings + 1)); }
+ok() { echo "  ok: $1"; }
+
+echo "Untracked files (flakes only build git-tracked files):"
+untracked="$(git ls-files --others --exclude-standard)"
+if [[ -z "$untracked" ]]; then
+  ok "none"
+else
+  while IFS= read -r f; do
+    case "$f" in
+      *.nix | bin/*) fail "$f is untracked, git add it before rebuilding" ;;
+      *) warn "$f is untracked" ;;
+    esac
+  done <<<"$untracked"
+fi
+
+echo
+echo "Uncommitted changes:"
+if git diff --quiet HEAD; then ok "none"; else warn "tracked files have uncommitted changes"; fi
+
+echo
+echo "Formatting (nixfmt --check, writes nothing):"
+# --inputs-from pins nixfmt to the flake's own nixpkgs, matching `nix fmt`.
+if fmt_out="$(git ls-files -z '*.nix' | xargs -0 nix shell --inputs-from . nixpkgs#nixfmt -c nixfmt --check 2>&1)"; then
+  ok "all tracked .nix files are formatted"
+else
+  while IFS= read -r line; do fail "$line (run 'nix fmt')"; done <<<"$fmt_out"
+fi
+
+echo
+echo "Failed systemd units:"
+sys_failed="$(systemctl --failed --no-legend --plain 2>/dev/null | awk '{print $1}' || true)"
+usr_failed="$(systemctl --user --failed --no-legend --plain 2>/dev/null | awk '{print $1}' || true)"
+if [[ -z "$sys_failed$usr_failed" ]]; then
+  ok "none"
+else
+  for u in $sys_failed; do fail "system unit $u failed (journalctl -u $u)"; done
+  for u in $usr_failed; do fail "user unit $u failed (journalctl --user -u $u)"; done
+fi
+
+echo
+echo "Rollback availability:"
+gens="$(compgen -G "$profile-*-link" | wc -l)"
+if ((gens <= 1)); then
+  fail "$gens system generation, a bad switch has nothing to roll back to"
+else
+  ok "$gens system generations"
+fi
+
+echo
+echo "Running system vs profile head:"
+if [[ "$(readlink -f /run/current-system)" == "$(readlink -f "$profile")" ]]; then
+  ok "running system is the latest generation"
+else
+  warn "running system differs from the profile head (reboot or rollback pending)"
+fi
+
+echo
+echo "Store usage:"
+echo "  /nix uses $(df -h --output=used /nix | tail -1 | tr -d ' '), $(df -h --output=avail /nix | tail -1 | tr -d ' ') free"
+links="$(find . -maxdepth 1 -type l -name 'result*' | wc -l)"
+if ((links > 0)); then warn "$links result symlink(s) in the repo root pin store paths (bin/nix-purge removes them)"; else ok "no result symlinks"; fi
+
+echo
+echo "Flake input age (stale after $stale_days days):"
+stale="$(jq -r --argjson now "$(date +%s)" --argjson days "$stale_days" '
+  .nodes as $n
+  | $n.root.inputs | to_entries[]
+  | .key as $name
+  | (.value | if type == "array" then .[0] else . end) as $key
+  | $n[$key].locked.lastModified // empty
+  | (($now - .) / 86400 | floor) as $age
+  | "\(if $age > $days then "STALE" else "ok" end) \($name) \($age)"' flake.lock)"
+while read -r mark name age; do printf '  %-5s %-16s %4s days\n' "$mark" "$name" "$age"; done <<<"$stale"
+if grep -q '^STALE' <<<"$stale"; then warn "some inputs are older than $stale_days days, consider 'nix flake update'"; fi
+
+echo
+echo "$problems problem(s), $warnings warning(s)"
+((problems == 0))

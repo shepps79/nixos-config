@@ -1,7 +1,8 @@
 # Bing image of the day as the wallpaper, like Windows 11. A systemd user timer
 # downloads today's UHD image into ~/Pictures/Wallpapers/Bing once a day (and
-# shortly after login) and hands it to noctalia over IPC. Noctalia's own
-# random rotation is off in dotfiles/noctalia, so the image sticks all day.
+# shortly after login) and sets it: over noctalia's IPC under niri/hyprland, or
+# with plasma-apply-wallpaperimage under KDE. Noctalia's own random rotation is
+# off in dotfiles/noctalia, so the image sticks all day.
 {
   flake.nixosModules.bingWallpaper =
     { pkgs, ... }:
@@ -14,6 +15,7 @@
           coreutils
           findutils
           noctalia-shell
+          kdePackages.plasma-workspace
         ];
         text = ''
           dir="$HOME/Pictures/Wallpapers/Bing"
@@ -32,14 +34,16 @@
           # Keep a month of history.
           find "$dir" -name '*.jpg' -mtime +30 -delete
 
-          # Noctalia may still be starting after login; retry for a minute.
+          # Whichever shell is running wins; it may still be starting after
+          # login, so retry for a minute.
           for _ in $(seq 12); do
-            if noctalia-shell ipc call wallpaper set "$file" all 2>/dev/null; then
+            if noctalia-shell ipc call wallpaper set "$file" all 2>/dev/null ||
+              plasma-apply-wallpaperimage "$file" >/dev/null 2>&1; then
               exit 0
             fi
             sleep 5
           done
-          echo "noctalia not reachable; wallpaper downloaded to $file" >&2
+          echo "no wallpaper shell reachable; wallpaper downloaded to $file" >&2
         '';
       };
     in

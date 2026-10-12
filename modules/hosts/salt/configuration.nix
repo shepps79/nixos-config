@@ -35,6 +35,7 @@
         networkmanager
         printing
         pipewire
+        openssh
       ];
 
       networking.hostName = "salt";
@@ -49,9 +50,6 @@
 
       # Use latest kernel.
       boot.kernelPackages = pkgs.linuxPackages_latest;
-
-      # Enable the OpenSSH daemon.
-      services.openssh.enable = true;
 
       boot.initrd.systemd.enable = true;
       boot.initrd.luks.devices."cryptroot".crypttabExtraOpts = [ "tpm2-device=auto" ];

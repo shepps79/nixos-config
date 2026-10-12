@@ -10,5 +10,15 @@
       text = "brave\n";
       mode = "0755";
     };
+
+    # Start minimised to the tray at Plasma login. niri starts it from its own
+    # config (dotfiles/niri); OnlyShowIn keeps other sessions from doubling up.
+    environment.etc."xdg/autostart/1password.desktop".text = ''
+      [Desktop Entry]
+      Type=Application
+      Name=1Password
+      Exec=1password --silent
+      OnlyShowIn=KDE;
+    '';
   };
 }

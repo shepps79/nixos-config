@@ -34,6 +34,7 @@
         brave
         networkmanager
         printing
+        pipewire
       ];
 
       networking.hostName = "salt";
@@ -48,16 +49,6 @@
 
       # Use latest kernel.
       boot.kernelPackages = pkgs.linuxPackages_latest;
-
-      # Enable sound with pipewire.
-      services.pulseaudio.enable = false;
-      security.rtkit.enable = true;
-      services.pipewire = {
-        enable = true;
-        alsa.enable = true;
-        alsa.support32Bit = true;
-        pulse.enable = true;
-      };
 
       # Enable touchpad support (enabled default in most desktopManager).
       # services.libinput.enable = true;

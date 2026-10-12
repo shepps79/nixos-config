@@ -1,5 +1,5 @@
 # DeepFilterNet noise-cancelled mic: adds a "DeepFilter Noise Cancelling Source"
-# input to pick in Zoom/Slack. Needs pipewire, which salt enables. From
+# input to pick in Zoom/Slack. Needs the pipewire module. From
 # github:vimjoyer/nixconf nixos/features/pipewire.nix.
 {
   flake.nixosModules.noiseCancelling =

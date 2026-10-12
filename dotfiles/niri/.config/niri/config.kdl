@@ -66,6 +66,11 @@ animations {
 }
 
 window-rule {
+    match app-id=r#"^org\.wezfurlong\.wezterm$"#
+    open-maximized true
+}
+
+window-rule {
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
     open-floating true
 }

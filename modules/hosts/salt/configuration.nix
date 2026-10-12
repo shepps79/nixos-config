@@ -26,6 +26,7 @@
         meld
         media
         jetbrains
+        onedrive
       ];
 
       networking.hostName = "salt";

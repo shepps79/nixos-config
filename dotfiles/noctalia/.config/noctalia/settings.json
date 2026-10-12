@@ -63,7 +63,7 @@
         ],
         "mouseWheelAction": "none",
         "mouseWheelWrap": true,
-        "outerCorners": true,
+        "outerCorners": false,
         "position": "bottom",
         "reverseScroll": false,
         "rightClickAction": "controlCenter",

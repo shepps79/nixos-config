@@ -20,3 +20,7 @@ cc-ee() {
 omp-ee() {
   OMP_PROFILE=equalexperts omp "$@"
 }
+
+pi-ee() {
+  PI_CODING_AGENT_DIR=~/.pi-equalexperts/agent pi "$@"
+}

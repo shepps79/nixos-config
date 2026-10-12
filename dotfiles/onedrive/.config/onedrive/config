@@ -1,0 +1,14 @@
+# abraunegg/onedrive client config. Options:
+# https://github.com/abraunegg/onedrive/blob/master/docs/application-config-options.md
+# Changing sync_dir, skip_* or sync_list requires a one-off `onedrive --sync --resync`.
+
+# Mirrors the Windows OneDrive root, so Documents, Pictures (incl. Screenshots)
+# and Desktop backed up by Windows land under here.
+sync_dir = "~/OneDrive"
+
+# Don't upload Linux dotfiles and editor/temp junk.
+skip_dotfiles = "true"
+skip_file = "~*|.~*|*.tmp|*.swp|*.partial"
+
+# Seconds between remote checks while monitoring (local changes are picked up via inotify).
+monitor_interval = "300"

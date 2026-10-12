@@ -28,6 +28,7 @@
         jetbrains
         onedrive
         bluetooth
+        noiseCancelling
       ];
 
       networking.hostName = "salt";

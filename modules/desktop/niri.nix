@@ -1,6 +1,7 @@
 # Niri (scrollable-tiling Wayland compositor) + Noctalia shell. Coexists with
 # ./plasma.nix and ./hyprland.nix: SDDM lists every session, pick one at login.
-# User config lives in dotfiles/niri (stow); niri ships a default config too.
+# User config lives in dotfiles/niri (stow), niri's default config adapted from
+# https://www.vimjoyer.com/vid79-parts-wrapped. niri finds xwayland-satellite on PATH.
 {
   flake.nixosModules.niri =
     { pkgs, ... }:
@@ -22,6 +23,7 @@
         swww
         brightnessctl
         wl-clipboard
+        xwayland-satellite
         cliphist
         matugen
         cava

@@ -37,6 +37,7 @@
         pipewire
         openssh
         zram
+        nvidia
       ];
 
       networking.hostName = "salt";

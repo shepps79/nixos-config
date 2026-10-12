@@ -58,6 +58,7 @@ local menu        = "hyprlauncher"
 
 -- Start minimised to the tray.
 hl.on("hyprland.start", function ()
+  hl.exec_cmd("noctalia-shell")
   hl.exec_cmd("1password --silent")
   hl.exec_cmd("slack --startup")
 end)

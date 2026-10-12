@@ -12,7 +12,9 @@
             pkgs.fetchzip (
               args
               // {
-                url = builtins.replaceStrings [ "download-cdn.jetbrains.com" ] [ "download.jetbrains.com" ] args.url;
+                url =
+                  builtins.replaceStrings [ "download-cdn.jetbrains.com" ] [ "download.jetbrains.com" ]
+                    args.url;
               }
             );
         })

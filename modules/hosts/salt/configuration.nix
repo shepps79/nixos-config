@@ -41,6 +41,7 @@
         nvidia
         lmstudio
         fingerprint
+        faceUnlock
       ];
 
       networking.hostName = "salt";

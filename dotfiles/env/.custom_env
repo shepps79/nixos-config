@@ -17,3 +17,6 @@ cc-ee() {
   CLAUDE_CONFIG_DIR=~/.claude-equalexperts claude "$@"
 }
 
+omp-ee() {
+  OMP_PROFILE=equalexperts omp "$@"
+}

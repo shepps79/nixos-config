@@ -23,6 +23,11 @@
       systemd.packages = [ pkgs.hyprpolkitagent ];
       systemd.user.services.hyprpolkitagent.wantedBy = [ "graphical-session.target" ];
 
+      # Noctalia's lock screen would otherwise use login, which is password-only
+      # so sddm unlocks KWallet. Its own service keeps face and fingerprint.
+      security.pam.services.noctalia = { };
+      environment.sessionVariables.NOCTALIA_PAM_SERVICE = "noctalia";
+
       environment.systemPackages = with pkgs; [
         niri
         noctalia-shell

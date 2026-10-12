@@ -8,7 +8,7 @@
       # Try the face before the fingerprint: Howdy gives up after a few seconds,
       # while fprintd waits ~30s for a finger before falling through. sddm and
       # the TTY both go through the login stack.
-      howdyFirst = lib.genAttrs [ "login" "sudo" "polkit-1" ] (service: {
+      howdyFirst = lib.genAttrs [ "login" "sudo" "polkit-1" "noctalia" ] (service: {
         rules.auth.howdy.order = config.security.pam.services.${service}.rules.auth.fprintd.order - 10;
       });
     in

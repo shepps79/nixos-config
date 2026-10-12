@@ -33,6 +33,7 @@
         powerProfiles
         brave
         networkmanager
+        printing
       ];
 
       networking.hostName = "salt";
@@ -47,9 +48,6 @@
 
       # Use latest kernel.
       boot.kernelPackages = pkgs.linuxPackages_latest;
-
-      # Enable CUPS to print documents.
-      services.printing.enable = true;
 
       # Enable sound with pipewire.
       services.pulseaudio.enable = false;

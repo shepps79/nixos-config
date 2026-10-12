@@ -36,6 +36,7 @@
         printing
         pipewire
         openssh
+        zram
       ];
 
       networking.hostName = "salt";
@@ -53,8 +54,6 @@
 
       boot.initrd.systemd.enable = true;
       boot.initrd.luks.devices."cryptroot".crypttabExtraOpts = [ "tpm2-device=auto" ];
-
-      zramSwap.enable = true;
 
       # First NixOS release installed on this machine. Never bump it on upgrade;
       # see https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .

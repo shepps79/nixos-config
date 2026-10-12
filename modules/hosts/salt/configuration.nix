@@ -27,6 +27,7 @@
         media
         jetbrains
         onedrive
+        bluetooth
       ];
 
       networking.hostName = "salt";

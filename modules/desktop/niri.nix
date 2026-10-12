@@ -15,6 +15,14 @@
       xdg.portal.enable = true;
       xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
+      # niri starts nothing to answer polkit prompts, so actions that ask for a
+      # password (fprintd-enroll, GUI admin tasks) fail with "Not Authorized".
+      # The unit's ConditionEnvironment=WAYLAND_DISPLAY skips it under Plasma X11,
+      # which has its own agent. Registering the package keeps its unit and makes
+      # this a drop-in; without it NixOS writes a unit with no ExecStart.
+      systemd.packages = [ pkgs.hyprpolkitagent ];
+      systemd.user.services.hyprpolkitagent.wantedBy = [ "graphical-session.target" ];
+
       environment.systemPackages = with pkgs; [
         niri
         noctalia-shell

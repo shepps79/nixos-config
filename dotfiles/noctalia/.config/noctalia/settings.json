@@ -326,7 +326,7 @@
         "allowPasswordWithFprintd": false,
         "animationDisabled": false,
         "animationSpeed": 1,
-        "autoStartAuth": false,
+        "autoStartAuth": true,
         "avatarImage": "",
         "boxRadiusRatio": 1,
         "clockFormat": "hh\\nmm",

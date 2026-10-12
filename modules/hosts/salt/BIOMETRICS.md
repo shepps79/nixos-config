@@ -33,6 +33,25 @@ fprintd-verify
 Touch the sensor repeatedly until enrollment completes. To start over:
 `fprintd-delete "$USER"`.
 
+Enrolling needs your password through polkit (`auth_self_keep`), so it needs
+a polkit agent: Plasma has its own, niri starts `hyprpolkitagent`
+(`modules/desktop/niri.nix`). With no agent running (e.g. Hyprland, whose
+config doesn't start one), `fprintd-enroll` fails with
+`PermissionDenied: Not Authorized: net.reactivated.fprint.device.enroll`.
+Don't reach for plain `sudo fprintd-enroll`: with no username, fprintd acts
+on the calling user, so the print is stored for root (`/var/lib/fprint/root`).
+`sudo fprintd-verify` then matches, but the lock screen and sddm authenticate
+you and find no prints, so the reader does nothing. Instead, name yourself:
+
+```bash
+sudo fprintd-enroll "$USER"
+```
+
+or give the terminal a text-mode agent with
+`pkttyagent --process $$ & fprintd-enroll`. `fprintd-list "$USER"` shows
+whose prints exist; remove a stray root enrollment with
+`sudo fprintd-delete root`.
+
 The first time fprintd starts, the Broadcom driver flashes new ControlVault
 firmware, which takes about two minutes. That outlasts systemd's start timeout,
 so the first command fails with `Timeout was reached` and a retry right after
@@ -77,6 +96,20 @@ sudo -k && sudo true
 
 You should be recognised by face. Cover the camera and it falls through to
 the fingerprint, then the password.
+
+## Lock screens
+
+- Noctalia (niri, Hyprland) authenticates against `/etc/pam.d/login`, so it
+  gets face, fingerprint and password like sddm. `autoStartAuth` is on in
+  `dotfiles/noctalia`, so authentication starts as soon as the lock screen
+  appears and the reader is ready without pressing Enter first. If Howdy is
+  enrolled it tries the face first, so a finger works once that gives up
+  (about 4 seconds, or straight away with the lid closed). niri's
+  `Super+L` calls Noctalia's lock; `/etc/pam.d/swaylock` has neither face
+  nor fingerprint, so don't lock with swaylock.
+- Plasma's screen locker uses the `kde-fingerprint` PAM service, which NixOS
+  generates when fprintd is enabled. It takes a finger alongside the password
+  field.
 
 ## Caveats
 

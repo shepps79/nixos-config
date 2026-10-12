@@ -56,9 +56,10 @@ layout {
 }
 
 spawn-at-startup "noctalia-shell"
-// Start minimised to the tray.
-spawn-at-startup "1password" "--silent"
-spawn-at-startup "slack" "--startup"
+// Start minimised to the tray. Wait for noctalia's tray watcher first: apps that
+// start before it never register, so their icons don't appear.
+spawn-sh-at-startup "until busctl --user status org.kde.StatusNotifierWatcher >/dev/null 2>&1; do sleep 0.5; done; exec 1password --silent"
+spawn-sh-at-startup "until busctl --user status org.kde.StatusNotifierWatcher >/dev/null 2>&1; do sleep 0.5; done; exec slack --startup"
 
 hotkey-overlay {
 }

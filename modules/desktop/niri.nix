@@ -29,6 +29,9 @@
         cliphist
         matugen
         cava
+        # noctalia writes its light/dark mode to org.gnome.desktop.interface with
+        # this, so GTK, Electron and portal clients follow it.
+        dconf
       ];
     };
 }

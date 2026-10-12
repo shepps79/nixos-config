@@ -30,6 +30,7 @@
         bluetooth
         noiseCancelling
         youtubeMusic
+        powerProfiles
       ];
 
       networking.hostName = "salt";

@@ -10,8 +10,9 @@ still works:
   addressed by its `/dev/v4l/by-path/` name). `modules/face-unlock.nix`
   (`flake.nixosModules.faceUnlock`).
 
-Both are imported by salt only. For `login` (which sddm and the TTY use),
-`sudo` and `polkit-1` the order is face, then fingerprint, then password:
+Both are imported by salt only. `login` (which sddm and the TTY use) is
+password-only, so the typed password can unlock KWallet. For `sudo`,
+`polkit-1` and `noctalia` the order is face, then fingerprint, then password:
 Howdy gives up after about 4 seconds, while fprintd waits about 30 seconds for
 a finger. Other PAM services get fprintd before Howdy, the NixOS default.
 
@@ -40,7 +41,7 @@ config doesn't start one), `fprintd-enroll` fails with
 `PermissionDenied: Not Authorized: net.reactivated.fprint.device.enroll`.
 Don't reach for plain `sudo fprintd-enroll`: with no username, fprintd acts
 on the calling user, so the print is stored for root (`/var/lib/fprint/root`).
-`sudo fprintd-verify` then matches, but the lock screen and sddm authenticate
+`sudo fprintd-verify` then matches, but the lock screen and sudo authenticate
 you and find no prints, so the reader does nothing. Instead, name yourself:
 
 ```bash
@@ -99,8 +100,8 @@ the fingerprint, then the password.
 
 ## Lock screens
 
-- Noctalia (niri, Hyprland) authenticates against `/etc/pam.d/login`, so it
-  gets face, fingerprint and password like sddm. `autoStartAuth` is on in
+- Noctalia (niri, Hyprland) authenticates against `/etc/pam.d/noctalia`,
+  picked by `NOCTALIA_PAM_SERVICE`, so it gets face, fingerprint and password. `autoStartAuth` is on in
   `dotfiles/noctalia`, so authentication starts as soon as the lock screen
   appears and the reader is ready without pressing Enter first. If Howdy is
   enrolled it tries the face first, so a finger works once that gives up
@@ -112,15 +113,6 @@ the fingerprint, then the password.
   field.
 
 ## Caveats
-
-- Logging in at sddm by face or finger leaves KWallet/gnome-keyring locked,
-  since they unlock with the password. To keep the password for login only,
-  add to `modules/face-unlock.nix`:
-
-  ```nix
-  security.pam.services.login.fprintAuth = false;
-  security.pam.services.login.howdy.enable = false;
-  ```
 
 - Howdy skips itself when the lid is closed (`abort_if_lid_closed`) and over
   SSH, so docked with the lid shut it goes straight to the fingerprint.

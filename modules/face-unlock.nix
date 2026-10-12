@@ -6,9 +6,8 @@
     { config, lib, ... }:
     let
       # Try the face before the fingerprint: Howdy gives up after a few seconds,
-      # while fprintd waits ~30s for a finger before falling through. sddm and
-      # the TTY both go through the login stack.
-      howdyFirst = lib.genAttrs [ "login" "sudo" "polkit-1" "noctalia" ] (service: {
+      # while fprintd waits ~30s for a finger before falling through.
+      howdyFirst = lib.genAttrs [ "sudo" "polkit-1" "noctalia" ] (service: {
         rules.auth.howdy.order = config.security.pam.services.${service}.rules.auth.fprintd.order - 10;
       });
     in
@@ -25,6 +24,11 @@
       # service replays that setup at boot and after suspend.
       services.linux-enable-ir-emitter.enable = true;
 
-      security.pam.services = lib.mkIf config.services.fprintd.enable howdyFirst;
+      security.pam.services = lib.mkMerge [
+        (lib.mkIf config.services.fprintd.enable howdyFirst)
+        # sddm and the TTY go through login. KWallet unlocks at login from the
+        # typed password, so a face login leaves it locked and prompting.
+        { login.howdy.enable = false; }
+      ];
     };
 }

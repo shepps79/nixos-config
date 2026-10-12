@@ -11,5 +11,9 @@
         tod.enable = true;
         tod.driver = pkgs.libfprint-2-tod1-broadcom;
       };
+
+      # sddm and the TTY go through login. KWallet unlocks at login from the
+      # typed password, so a fingerprint login leaves it locked and prompting.
+      security.pam.services.login.fprintAuth = false;
     };
 }

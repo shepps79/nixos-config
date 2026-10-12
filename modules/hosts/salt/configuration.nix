@@ -29,6 +29,7 @@
         onedrive
         bluetooth
         noiseCancelling
+        youtubeMusic
       ];
 
       networking.hostName = "salt";

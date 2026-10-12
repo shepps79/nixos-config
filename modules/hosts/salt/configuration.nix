@@ -38,6 +38,7 @@
         openssh
         zram
         nvidia
+        lmstudio
       ];
 
       networking.hostName = "salt";

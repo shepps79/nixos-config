@@ -115,11 +115,11 @@ binds {
     XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%+"; }
     XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%-"; }
 
-    // Screenshots copy to the clipboard. vimjoyer uses grim/slurp and swappy
-    // (Mod+Shift+E, annotate clipboard); niri's built-in screenshot does both
-    // without extra packages, minus annotation.
+    // Screenshots copy to the clipboard (niri's built-in; vimjoyer uses
+    // grim/slurp). Mod+Shift+E opens the clipboard image in swappy to annotate.
     Mod+Shift+S { screenshot; }
     Mod+Ctrl+S { screenshot-screen; }
+    Mod+Shift+E { spawn-sh "wl-paste | swappy -f -"; }
 
     // Kept from niri's default config: vimjoyer's desktop has none of these,
     // but a laptop wants them, and without a quit bind there's no way out.

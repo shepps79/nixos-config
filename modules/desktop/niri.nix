@@ -23,6 +23,8 @@
         swww
         brightnessctl
         wl-clipboard
+        swappy
+        pwvucontrol
         xwayland-satellite
         cliphist
         matugen

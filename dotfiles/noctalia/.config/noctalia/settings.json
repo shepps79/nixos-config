@@ -420,7 +420,7 @@
         "useFahrenheit": false,
         "weatherEnabled": true,
         "weatherShowEffects": true,
-        "weatherTaliaMascotAlways": false
+        "weatherTaliaMascotAlways": true
     },
     "network": {
         "bluetoothAutoConnect": true,

@@ -50,9 +50,6 @@
       # Use latest kernel.
       boot.kernelPackages = pkgs.linuxPackages_latest;
 
-      # Enable touchpad support (enabled default in most desktopManager).
-      # services.libinput.enable = true;
-
       # Enable the OpenSSH daemon.
       services.openssh.enable = true;
 

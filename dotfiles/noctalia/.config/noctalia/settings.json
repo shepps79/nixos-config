@@ -602,7 +602,7 @@
     },
     "wallpaper": {
         "automationEnabled": false,
-        "directory": "/home/richard/Pictures/Wallpapers",
+        "directory": "/home/richard/Pictures/Wallpapers/Bing",
         "enableMultiMonitorDirectories": false,
         "enabled": true,
         "favorites": [

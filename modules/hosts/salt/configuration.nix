@@ -13,6 +13,7 @@
         niri
         fonts
         onepassword
+        bingWallpaper
         obsidian
         zoom
         slack

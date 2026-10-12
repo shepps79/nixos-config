@@ -12,6 +12,13 @@ abraunegg/onedrive client as a systemd user service (`onedrive --monitor`).
 Windows 11 folder backup puts Documents, Pictures (with `Pictures/Screenshots`)
 and Desktop at the OneDrive root, so they show up under `~/OneDrive/`.
 
+The same package links `~/Documents` and `~/Pictures` to `~/OneDrive/Documents`
+and `~/OneDrive/Pictures`. Stow refuses absolute symlinks, so the links in
+`dotfiles/onedrive/` are relative and assume the repo is checked out at
+`~/git/personal/nixos-config`. Stow won't replace real directories: remove the
+empty `~/Documents` and `~/Pictures` (`rmdir ~/Documents ~/Pictures`) before
+the first stow.
+
 ## 1. Activate
 
 ```bash

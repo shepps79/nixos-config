@@ -20,4 +20,8 @@ config.mouse_bindings = {
   },
 }
 
+-- Generated into colors/ by noctalia. Keep this line here: if it's missing,
+-- noctalia adds it with `sed -i`, which replaces the stow symlink with a copy.
+config.color_scheme = "Noctalia"
+
 return config

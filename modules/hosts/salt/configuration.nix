@@ -40,6 +40,7 @@
         zram
         nvidia
         lmstudio
+        fingerprint
       ];
 
       networking.hostName = "salt";

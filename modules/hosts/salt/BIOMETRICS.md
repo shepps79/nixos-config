@@ -33,24 +33,41 @@ fprintd-verify
 Touch the sensor repeatedly until enrollment completes. To start over:
 `fprintd-delete "$USER"`.
 
+The first time fprintd starts, the Broadcom driver flashes new ControlVault
+firmware, which takes about two minutes. That outlasts systemd's start timeout,
+so the first command fails with `Timeout was reached` and a retry right after
+says `No devices available`. Don't reboot or restart fprintd during the flash.
+Watch `journalctl -u fprintd -f` until it logs
+`Control Vault firmware upgrade successful`. Once
+`systemctl is-active fprintd` no longer says `deactivating`, run the command
+again. Later starts skip the flash.
+
 ## 3. Enroll your face
 
+The camera doesn't light its IR emitter by itself, so without it Howdy sees
+only a dark silhouette and says `No face detected`. The
+`linux-enable-ir-emitter` service is enabled, but it needs configuring once:
+
 ```bash
-sudo howdy test        # live IR preview; check the image isn't black
+sudo linux-enable-ir-emitter configure
+```
+
+It tries control values on the camera and asks after each one whether the
+emitter is flashing. Watch the small light beside the lens; a phone camera
+shows the IR flash if your eyes can't. The working config is saved under
+`/var/lib/linux-enable-ir-emitter`, and the service replays it at boot and
+after suspend.
+
+Then:
+
+```bash
+sudo howdy test        # live IR preview; your face should be lit
 sudo howdy add         # look at the camera
 ```
 
 Add a few models in different conditions (glasses on and off, day and night):
 each `howdy add` is another model. `sudo howdy list` shows them,
 `sudo howdy remove <id>` or `sudo howdy clear` deletes them.
-
-If the `howdy test` image is dark, the IR emitter isn't switching on. Add
-`services.linux-enable-ir-emitter.enable = true;` to `modules/face-unlock.nix`,
-rebuild, then configure it once:
-
-```bash
-sudo linux-enable-ir-emitter configure
-```
 
 ## 4. Try it
 
@@ -83,6 +100,5 @@ the fingerprint, then the password.
 systemctl status fprintd
 journalctl -u fprintd -b
 lsusb | grep -i 0a5c        # reader present?
-sudo howdy config           # opens /etc/howdy/config.ini (read-only; change
-                            # settings via services.howdy.settings instead)
+cat /etc/howdy/config.ini   # generated; change it via services.howdy.settings
 ```

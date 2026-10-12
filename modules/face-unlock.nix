@@ -20,6 +20,11 @@
         settings.video.device_path = "/dev/v4l/by-path/pci-0000:00:14.0-usb-0:3:1.2-video-index0";
       };
 
+      # The camera doesn't light its IR emitter on its own, leaving the face
+      # dark. Needs a one-off `sudo linux-enable-ir-emitter configure`; the
+      # service replays that setup at boot and after suspend.
+      services.linux-enable-ir-emitter.enable = true;
+
       security.pam.services = lib.mkIf config.services.fprintd.enable howdyFirst;
     };
 }

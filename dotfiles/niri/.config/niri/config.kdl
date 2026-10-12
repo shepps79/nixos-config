@@ -56,6 +56,9 @@ layout {
 }
 
 spawn-at-startup "noctalia-shell"
+// Start minimised to the tray.
+spawn-at-startup "1password" "--silent"
+spawn-at-startup "slack" "--startup"
 
 hotkey-overlay {
 }

@@ -86,6 +86,7 @@ binds {
     // Noctalia's lock screen, not swaylock: its PAM service (login) takes face
     // and fingerprint, /etc/pam.d/swaylock only a password.
     Super+L hotkey-overlay-title="Lock the Screen: noctalia" { spawn "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
+    Mod+V hotkey-overlay-title="Clipboard History: noctalia" { spawn "noctalia-shell" "ipc" "call" "launcher" "clipboard"; }
 
     Super+Alt+S allow-when-locked=true hotkey-overlay-title=null { spawn-sh "pkill orca || exec orca"; }
 
@@ -224,7 +225,7 @@ binds {
     Mod+Shift+Minus { set-window-height "-10%"; }
     Mod+Shift+Equal { set-window-height "+10%"; }
 
-    Mod+V       { toggle-window-floating; }
+    Mod+Alt+V   { toggle-window-floating; }
     Mod+Shift+V { switch-focus-between-floating-and-tiling; }
 
     Mod+W { toggle-column-tabbed-display; }

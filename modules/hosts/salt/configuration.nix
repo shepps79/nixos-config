@@ -32,6 +32,7 @@
         youtubeMusic
         powerProfiles
         brave
+        networkmanager
       ];
 
       networking.hostName = "salt";
@@ -46,9 +47,6 @@
 
       # Use latest kernel.
       boot.kernelPackages = pkgs.linuxPackages_latest;
-
-      # Enable networking
-      networking.networkmanager.enable = true;
 
       # Enable CUPS to print documents.
       services.printing.enable = true;

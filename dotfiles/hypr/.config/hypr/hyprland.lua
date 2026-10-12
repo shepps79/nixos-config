@@ -56,11 +56,13 @@ local menu        = "hyprlauncher"
 --   hl.exec_cmd("waybar & hyprpaper & firefox")
 -- end)
 
--- Start minimised to the tray.
+-- Start minimised to the tray. Wait for noctalia's tray watcher first: apps that
+-- start before it never register, so their icons don't appear.
+local after_tray = "until busctl --user status org.kde.StatusNotifierWatcher >/dev/null 2>&1; do sleep 0.5; done; exec "
 hl.on("hyprland.start", function ()
   hl.exec_cmd("noctalia-shell")
-  hl.exec_cmd("1password --silent")
-  hl.exec_cmd("slack --startup")
+  hl.exec_cmd(after_tray .. "1password --silent")
+  hl.exec_cmd(after_tray .. "slack --startup")
 end)
 
 

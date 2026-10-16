@@ -126,6 +126,12 @@
                     "id": "PowerProfile"
                 },
                 {
+                    "displayMode": "alwaysShow",
+                    "iconColor": "none",
+                    "id": "Network",
+                    "textColor": "none"
+                },
+                {
                     "displayMode": "alwaysHide",
                     "iconColor": "none",
                     "id": "Bluetooth",

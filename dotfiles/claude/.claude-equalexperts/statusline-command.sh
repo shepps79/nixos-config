@@ -80,6 +80,10 @@ fi
 
 # ---- Model ----
 model=$(printf '%s' "$input" | jq -r '.model.display_name')
+# Effort: prefer the status-line JSON, fall back to the env var Claude Code exports.
+effort=$(printf '%s' "$input" | jq -r '(.effort.level? // .effort? // .model.effort?) | strings' 2>/dev/null)
+effort=${effort:-$CLAUDE_EFFORT}
+[ -n "$effort" ] && model="${model} (${effort})"
 
 # ---- Context usage (percentage + bar + tokens) ----
 total_tokens=$(printf '%s' "$input" | jq -r '.context_window.total_input_tokens // 0')

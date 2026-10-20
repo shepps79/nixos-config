@@ -13,6 +13,9 @@
         variant = "";
       };
 
-      environment.systemPackages = with pkgs; [ kdePackages.kate ];
+      environment.systemPackages = with pkgs; [
+        kdePackages.kate
+        kdePackages.kcalc
+      ];
     };
 }

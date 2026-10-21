@@ -33,7 +33,7 @@
         noctalia-shell
         hyprpolkitagent
         kitty
-        swww
+        awww
         brightnessctl
         wl-clipboard
         swappy

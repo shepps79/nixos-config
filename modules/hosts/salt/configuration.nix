@@ -54,8 +54,8 @@
       # generation it points at.
       boot.loader.systemd-boot.configurationLimit = 4;
 
-      # Use latest kernel.
-      boot.kernelPackages = pkgs.linuxPackages_latest;
+      # Pinned: stable's nvidia driver fails to build against 7.3 (linuxPackages_latest).
+      boot.kernelPackages = pkgs.linuxPackages_6_18;
 
       boot.initrd.systemd.enable = true;
       boot.initrd.luks.devices."cryptroot".crypttabExtraOpts = [ "tpm2-device=auto" ];

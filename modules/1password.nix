@@ -1,6 +1,21 @@
 # 1Password desktop app, so the Brave extension unlocks with system auth.
+{ inputs, ... }:
+
 {
   flake.nixosModules.onepassword = {
+    # Stable nixpkgs lags behind and the app nags to update, so take the GUI
+    # from unstable.
+    nixpkgs.overlays = [
+      (final: prev: {
+        # Imported rather than legacyPackages so it inherits allowUnfree.
+        _1password-gui =
+          (import inputs.nixpkgs-unstable {
+            inherit (prev.stdenv.hostPlatform) system;
+            inherit (prev) config;
+          })._1password-gui;
+      })
+    ];
+
     programs._1password-gui = {
       enable = true;
       polkitPolicyOwners = [ "richard" ];

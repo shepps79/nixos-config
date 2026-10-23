@@ -9,6 +9,9 @@
     import-tree.url = "github:vic/import-tree";
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
     nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
+    herdr.url = "github:herdrdev/herdr";
+    herdr.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    herdr.inputs.rust-overlay.follows = "rust-overlay";
     nvm.url = "github:nvm-sh/nvm";
     nvm.flake = false;
     omp.url = "github:can1357/oh-my-pi";

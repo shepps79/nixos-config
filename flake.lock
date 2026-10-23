@@ -128,6 +128,29 @@
         "type": "github"
       }
     },
+    "herdr": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ],
+        "rust-overlay": [
+          "rust-overlay"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792764237,
+        "narHash": "sha256-joF3jTFujDpQnmRwA5H0uZyEZRLTKZsf0G61WmlDDkY=",
+        "owner": "herdrdev",
+        "repo": "herdr",
+        "rev": "6b526626f66e22c08962a7f39a83fc9ac2ebda62",
+        "type": "github"
+      },
+      "original": {
+        "owner": "herdrdev",
+        "repo": "herdr",
+        "type": "github"
+      }
+    },
     "import-tree": {
       "locked": {
         "lastModified": 1788467110,
@@ -292,6 +315,7 @@
     "root": {
       "inputs": {
         "flake-parts": "flake-parts",
+        "herdr": "herdr",
         "import-tree": "import-tree",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs",

@@ -25,6 +25,7 @@
         cupsPdf
         clamav
         meld
+        codex
         media
         jetbrains
         onedrive

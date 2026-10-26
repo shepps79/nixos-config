@@ -19,5 +19,16 @@
             );
         })
       ];
+
+      # Extra libraries the Toolbox-downloaded IDEs' bundled JBR and Rider's
+      # .NET backend load, on top of the GUI set in nix-ld.nix.
+      programs.nix-ld.libraries = with pkgs; [
+        freetype
+        fontconfig
+        libxext
+        libxrender
+        libxtst
+        icu
+      ];
     };
 }

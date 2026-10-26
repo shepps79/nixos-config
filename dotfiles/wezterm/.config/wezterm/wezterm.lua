@@ -24,4 +24,7 @@ config.mouse_bindings = {
 -- noctalia adds it with `sed -i`, which replaces the stow symlink with a copy.
 config.color_scheme = "Noctalia"
 
+-- Enable the vertical scrollbar
+config.enable_scroll_bar = true
+
 return config

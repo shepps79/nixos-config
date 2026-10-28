@@ -45,6 +45,7 @@
         faceUnlock
         cameractrls
         guvcview
+        v4lUtils
       ];
 
       networking.hostName = "salt";

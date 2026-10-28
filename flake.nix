@@ -14,7 +14,8 @@
     herdr.inputs.rust-overlay.follows = "rust-overlay";
     nvm.url = "github:nvm-sh/nvm";
     nvm.flake = false;
-    omp.url = "github:can1357/oh-my-pi";
+    # Pinned to a release tag; bin/update bumps it. Tracking master rebuilt omp from source on every update.
+    omp.url = "github:can1357/oh-my-pi/v18.13.2";
     rust-overlay.url = "github:oxalica/rust-overlay";
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
   };

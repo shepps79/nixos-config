@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Update flake inputs, commit the lock file on its own, then rebuild.
+set -euo pipefail
+
+cd "$(dirname "$(readlink -f "$0")")/.."
+
+host="${1:-$(hostname)}"
+# Check before updating, so a wrong host doesn't leave a lock bump that was never built.
+if [[ "$host" != "$(hostname)" ]]; then
+  echo "refusing to switch '$host' config on '$(hostname)'" >&2
+  exit 1
+fi
+
+nix flake update
+# Commit only flake.lock so the bump stays separate from whatever rebuild stages.
+if ! git diff --quiet -- flake.lock; then
+  git commit -m "chore(flake): update flake inputs" -- flake.lock
+fi
+
+exec bin/rebuild "$host"

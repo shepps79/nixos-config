@@ -43,6 +43,7 @@
         lmstudio
         fingerprint
         faceUnlock
+        cameractrls
       ];
 
       networking.hostName = "salt";

@@ -9,6 +9,8 @@
     # from parallel nix fetches.
     # mkForce: enabling resolved would otherwise make NM pass the DHCP DNS on to it.
     networking.networkmanager.dns = lib.mkForce "none";
+    # dns = none only covers resolv.conf; this stops NM pushing per-link DNS to resolved.
+    networking.networkmanager.settings.main.systemd-resolved = false;
     services.resolved.enable = true;
     services.resolved.settings.Resolve = {
       DNS = [

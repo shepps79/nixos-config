@@ -44,6 +44,7 @@
         fingerprint
         faceUnlock
         cameractrls
+        guvcview
       ];
 
       networking.hostName = "salt";

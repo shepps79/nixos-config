@@ -1,4 +1,4 @@
-# ClamAV: signature updates, clamd, a nightly scan of the home directory, and
+# ClamAV: signature updates, clamd, a weekly scan of the home directory, and
 # on-access scanning of Downloads. Imported by salt only.
 {
   flake.nixosModules.clamav = {
@@ -21,7 +21,7 @@
       clamonacc.enable = true;
       scanner = {
         enable = true;
-        interval = "*-*-* 02:00:00";
+        interval = "weekly";
         scanDirectories = [ "/home/richard" ];
       };
     };

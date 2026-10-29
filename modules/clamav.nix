@@ -28,5 +28,13 @@
 
     # A laptop is often asleep at scan time; run the missed scan on wake.
     systemd.timers.clamdscan.timerConfig.Persistent = true;
+
+    # A busy clamd can ignore SIGTERM, holding shutdown for the default 90s. Nothing
+    # here needs a clean stop, so kill it sooner.
+    systemd.services = {
+      clamav-daemon.serviceConfig.TimeoutStopSec = "10s";
+      clamav-clamonacc.serviceConfig.TimeoutStopSec = "10s";
+      clamdscan.serviceConfig.TimeoutStopSec = "10s";
+    };
   };
 }

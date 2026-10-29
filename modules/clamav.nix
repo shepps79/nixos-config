@@ -11,6 +11,12 @@
         OnAccessPrevention = true;
         # Don't scan clamd's own reads.
         OnAccessExcludeUname = "clamav";
+        # Skip bulky non-executable data in the home scan: model weights, IDE data, caches.
+        ExcludePath = [
+          "^/home/richard/\\.lmstudio/"
+          "^/home/richard/\\.local/share/JetBrains/"
+          "^/home/richard/\\.cache/"
+        ];
       };
       clamonacc.enable = true;
       scanner = {

@@ -41,6 +41,7 @@
         zram
         nvidia
         lmstudio
+        ollama
         fingerprint
         faceUnlock
         cameractrls

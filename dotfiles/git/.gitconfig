@@ -4,9 +4,9 @@
 
 [includeIf "gitdir:~/git/personal/"]
 	path = ~/.gitconfig-personal
-[includeId "gitdir:~/nixos-config/"]
+[includeIf "gitdir:~/nixos-config/"]
 	path = ~/.gitconfig-personal
-[includeId "gitdir:~/git/synectics/"]
+[includeIf "gitdir:~/git/synectics/"]
 	path = ~/.gitconfig-synectics
 [alias]
 	co = checkout   # checkout branch shortcut

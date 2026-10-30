@@ -26,6 +26,10 @@ User-level config that isn't NixOS config lives in `dotfiles/`, symlinked into `
 - Exception: noctalia rewrites `~/.config/noctalia/settings.json`, but Qt's QSaveFile follows symlinks, so its GUI changes land in the repo as diffs.
 - `.claude/skills/` at the repo root is this repo's own project skills, not a dotfiles package.
 
+## Committing
+
+Every commit MUST be made with the `commit` skill: one logical change per commit, conventional message, no attribution trailers.
+
 ## Rebuilding
 
 `bin/rebuild` formats, switches and commits. It resolves `--flake .` by hostname, so it only builds the host it runs on, and it stages everything first — commit your work before running it. New files must be git-tracked before the flake can see them.

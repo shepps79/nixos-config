@@ -11,7 +11,6 @@
         gnumake
         maven
         pipx
-        pi-coding-agent
         pkg-config
         python3
         shellcheck

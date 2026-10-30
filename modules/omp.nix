@@ -1,4 +1,4 @@
-# AI coding agent harnesses: omp (oh-my-pi) + pi (upstream).
+# omp (oh-my-pi) coding agent harness; upstream pi is in pi.nix.
 { inputs, ... }:
 
 {

@@ -15,6 +15,7 @@
         onepassword
         bingWallpaper
         obsidian
+        libreoffice
         zoom
         slack
         vscode

@@ -1,17 +1,16 @@
 /**
- * SiriusXM Status Line (ported from ~/.claude-siriusxm/statusline-command.sh)
+ * Synectics Status Line (copied from ~/.pi-equalexperts/agent/extensions/status-line.ts)
  *
  * Renders a custom footer that mirrors the Claude Code status line:
  *
- *   | SIRIUSXM |  ~/dir (branch +1) | Model (1M context) | ctx 23% ▓▓░░░░ | 230,079/1,000,000 tok | $14.33 cost | $115.37/$200.00 (resets 2026-07-27)
+ *   | Synectics |  ~/dir (branch +1) | Model | ctx 23% ▓▓░░░░ | 230,079/1,000,000 tok | $14.33 cost
  *
- * Hardcoded label text: "| SIRIUSXM |", "ctx", "tok", "cost", "(resets ...)".
- * Everything else (dir, git, model, context %, tokens, cost, LiteLLM budget)
- * is dynamic.
+ * Hardcoded label text: "| Synectics |", "ctx", "tok", "cost".
+ * Everything else (dir, git, model, context %, tokens, cost) is dynamic.
  *
  * Colors/icons match the user's Powerlevel10k (classic dark, nerdfont-v3) theme.
  *
- * Enabled automatically on session_start. Use /siriusxm-status to toggle.
+ * Enabled automatically on session_start. Use /synectics-status to toggle.
  */
 
 import type { AssistantMessage } from "@earendil-works/pi-ai";
@@ -54,12 +53,6 @@ interface GitState {
 	conflicted: number;
 }
 
-interface LitellmState {
-	spend: number;
-	budget: number | null;
-	reset: string | null;
-}
-
 // ---- Helpers ----
 function addCommas(n: number): string {
 	return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -84,8 +77,6 @@ function countLines(text: string, test: (line: string) => boolean): number {
 export default function (pi: ExtensionAPI) {
 	let enabled = false;
 	let gitState: GitState | null = null;
-	let litellm: LitellmState | null = null;
-	let litellmInFlight = false;
 	let requestRender: (() => void) | null = null;
 
 	// ---- Background: git status (sync render can't run git, so cache it) ----
@@ -138,37 +129,6 @@ export default function (pi: ExtensionAPI) {
 		requestRender?.();
 	}
 
-	// ---- Background: LiteLLM real spend/budget (cached 60s) ----
-	async function refreshLitellm() {
-		const key = process.env.SIRIUSXM_LITELLM_KEY;
-		if (!key) return;
-		if (litellmInFlight) return; // avoid overlapping requests
-		litellmInFlight = true;
-
-		try {
-			const controller = new AbortController();
-			const timer = setTimeout(() => controller.abort(), 2000);
-			const res = await fetch("https://litellm.siriusxm.com/user/info", {
-				headers: { Authorization: `Bearer ${key}` },
-				signal: controller.signal,
-			});
-			clearTimeout(timer);
-			if (!res.ok) return;
-			const data = (await res.json()) as { user_info?: { spend?: number; max_budget?: number | null; budget_reset_at?: string | null } };
-			const info = data.user_info ?? {};
-			litellm = {
-				spend: typeof info.spend === "number" ? info.spend : 0,
-				budget: typeof info.max_budget === "number" ? info.max_budget : null,
-				reset: info.budget_reset_at ?? null,
-			};
-			requestRender?.();
-		} catch {
-			// network/timeout: keep last known value
-		} finally {
-			litellmInFlight = false;
-		}
-	}
-
 	function buildGitSegment(): string {
 		if (!gitState) return "";
 		const g = gitState;
@@ -188,7 +148,7 @@ export default function (pi: ExtensionAPI) {
 		const dirDisplay = homeDisplay(ctx.cwd);
 
 		// ---- Model ----
-		const effort = ctx.thinkingLevel ?? ctx.getThinkingLevel?.();
+		const effort = ctx.thinkingLevel ?? pi.getThinkingLevel();
 		const model = `${ctx.model?.name || "no-model"}${effort ? ` (${effort})` : ""}`;
 
 		// ---- Context usage (percent + bar + tokens) ----
@@ -220,25 +180,17 @@ export default function (pi: ExtensionAPI) {
 		}
 		const costSegment = `${SEP}${C_COST}$${cost.toFixed(2)} cost${RESET}`;
 
-		// ---- LiteLLM real spend/budget ----
-		let litellmSegment = "";
-		if (litellm) {
-			let s = `${C_COST}$${litellm.spend.toFixed(2)}`;
-			if (litellm.budget != null) s += `/$${litellm.budget.toFixed(2)}`;
-			if (litellm.reset) s += ` (resets ${litellm.reset.split("T")[0]})`;
-			litellmSegment = `${SEP}${s}${RESET}`;
-		}
-
 		// ---- Assemble ----
-		let line = `${C_LINUX}${ICON_LINUX}${RESET}${SEP}SIRIUSXM${SEP}${C_DIR}${ICON_FOLDER} ${dirDisplay}${RESET}${buildGitSegment()}`;
+		let line = `${C_LINUX}${ICON_LINUX}${RESET}${SEP}Synectics${SEP}${C_DIR}${ICON_FOLDER} ${dirDisplay}${RESET}${buildGitSegment()}`;
 		line += `${SEP}${C_MODEL}${model}${RESET}`;
 		line += `${SEP}ctx ${pctColor}${pctFormatted}%${RESET} ${pctColor}${bar}${RESET}`;
 		line += `${SEP}${C_TOKENS}${tokensDisplay}${RESET}`;
-		line += `${costSegment}${litellmSegment}`;
+		line += `${costSegment}`;
 		return line;
 	}
 
 	function enable(ctx: ExtensionContext) {
+		if (ctx.mode !== "tui") return;
 		ctx.ui.setFooter((tui, _theme, footerData) => {
 			requestRender = () => tui.requestRender();
 			const unsub = footerData.onBranchChange(() => {
@@ -246,7 +198,6 @@ export default function (pi: ExtensionAPI) {
 			});
 			// initial data
 			void refreshGit(ctx.cwd);
-			void refreshLitellm();
 			return {
 				dispose: () => {
 					unsub();
@@ -267,24 +218,23 @@ export default function (pi: ExtensionAPI) {
 	});
 
 	// Refresh once per prompt, after pi has finished all turns and gone idle
-	// (edits/commits have settled, cost/spend is final). Branch-name changes are
+	// (edits/commits have settled, cost is final). Branch-name changes are
 	// handled reactively via footerData.onBranchChange in enable().
 	pi.on("agent_settled", async (_event, ctx) => {
 		if (!enabled) return;
 		void refreshGit(ctx.cwd);
-		void refreshLitellm();
 	});
 
-	pi.registerCommand("siriusxm-status", {
-		description: "Toggle the SiriusXM status line (custom footer)",
+	pi.registerCommand("synectics-status", {
+		description: "Toggle the Synectics status line (custom footer)",
 		handler: async (_args, ctx) => {
 			if (enabled) {
 				ctx.ui.setFooter(undefined);
 				enabled = false;
-				ctx.ui.notify("SiriusXM status line disabled", "info");
+				ctx.ui.notify("Synectics status line disabled", "info");
 			} else {
 				enable(ctx);
-				ctx.ui.notify("SiriusXM status line enabled", "info");
+				ctx.ui.notify("Synectics status line enabled", "info");
 			}
 		},
 	});

@@ -2,6 +2,7 @@
 export ARCHON_TELEMETRY_DISABLED=1
 export DO_NOT_TRACK=1
 export POSTHOG_API_KEY=off
+export CODEGRAPH_TELEMETRY=0
 
 # Machine-local values
 [ -f "$HOME/.custom_env.local" ] && . "$HOME/.custom_env.local"

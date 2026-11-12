@@ -38,3 +38,5 @@
 [delta]
 	navigate = true
 	dark = true
+[fetch]
+	prune = true
